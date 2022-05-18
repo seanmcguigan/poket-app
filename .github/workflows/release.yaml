@@ -1,52 +1,22 @@
-# Terraform Provider release workflow.
+# Package and deploy docker image
 name: Release
 
 # This GitHub action creates a release when a tag that matches the pattern
 # "v*" (e.g. v0.1.0) is created.
-on:
+on:  
   push:
-    branches:
-      - 'main'
-    paths-ignore:
-      - 'README.md'
-
-# Releases need permissions to read and write the repository contents.
-# GitHub considers creating releases and uploading assets as writing contents.
-permissions:
-  contents: write
+    tags:
+      - 'v*'
 
 jobs:
-  goreleaser:
+  dockerimageeleaser:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          # Allow goreleaser to access older tag information.
-          fetch-depth: 0
-      - name: Install svu
+
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Test
         run: |
-          echo 'deb [trusted=yes] https://apt.fury.io/caarlos0/ /' | sudo tee /etc/apt/sources.list.d/caarlos0.list
-          sudo apt update
-          sudo apt install svu
-      # check if we need to bump tags
-      - name: check for release
-        run: |
-          if [ $(svu next) == $(svu current) ]; then
-            echo "tag match - skip release" &&  echo "do-release=false" >> $GITHUB_ENV
-          else
-            echo "tag mismatch - tagging for new release" &&  echo "do-release=true" >> $GITHUB_ENV
-          fi
-      - name: Tag new version
-        if: ${{ env.do-release == 'true' }}
-        run: |
-          git tag $(svu next)
-          git push --tags
-      - name: Run Docker Image Deploy
-        if: ${{ env.do-release == 'true' }}
-        uses: goreleaser/goreleaser-action@v2.8.0
-        with:
-          args: release --rm-dist
-        env:
-          # GitHub sets the GITHUB_TOKEN secret automatically.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+          echo $RELEASE_VERSION
+          echo ${{ env.RELEASE_VERSION }}

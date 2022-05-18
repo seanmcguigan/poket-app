@@ -64,5 +64,5 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          docker.io/seanmcguigan/poker:$RELEASE_VERSION
+          docker.io/seanmcguigan/poker:${{ env.RELEASE_VERSION }}
           docker.io/seanmcguigan/poker:${{steps.version.outputs.date_version}}

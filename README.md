@@ -12,3 +12,5 @@
 | `fix!: fixed something`                                                                | Major        |
 | `feat!: added blah`                                                                    | Major        |
 | `chore: foo`                                                                           | Nothing      |
+
+```date > ./src/date && docker build -t docker.io/seanmcguigan/poker:foobar . -f Docker/Dockerfile```

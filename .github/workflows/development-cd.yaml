@@ -18,10 +18,7 @@ jobs:
       id: version
       run: echo ::set-output name=date_version::$(date -u '+%Y%d%m%H%M%S')
 
-    - name: Set short sha env
-      run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
-
-    - name: Show short sha v2
+    - name: Show short sha
       id: sha
       run: echo ::set-output name=short_sha::$(echo ${GITHUB_SHA} | cut -c1-8)
 
@@ -43,7 +40,7 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          docker.io/seanmcguigan/poker:development-${{ env.SHORT_SHA}}-${{steps.version.outputs.date_version}}
+          docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
 
       # - name: install svu
       #   run: |

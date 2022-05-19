@@ -1,12 +1,12 @@
 # Package and deploy docker image
-name: Release
+name: Development deployment
 
 # This GitHub action creates a release when a tag that matches the pattern
 # "v*" (e.g. v0.1.0) is created.
 on:  
   push:
     tags:
-      - '*'
+      - 'development-*'
 
 jobs:
   dockerimageeleaser:
@@ -52,8 +52,6 @@ jobs:
     -
       name: Available platforms
       run: echo ${{ steps.buildx.outputs.platforms }}
-
-    # here you can do additional steps
 
     -
       name: Build and push

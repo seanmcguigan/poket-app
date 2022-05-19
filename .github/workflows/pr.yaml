@@ -22,8 +22,11 @@ jobs:
           # Allow dockerimageeleaser to access older tag information.
           fetch-depth: 0
       
-      - name: run test suite
-        run: echo "Runiing tests"
+      - name: linting
+        run: echo "Runiing linting tests"
+
+      - name: unit tests
+        run: echo "Runiing unit tests"
       
       - name: install svu
         run: |

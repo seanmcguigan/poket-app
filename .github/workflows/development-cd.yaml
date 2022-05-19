@@ -1,10 +1,10 @@
 # Package and deploy docker image
-name: Development deployment
+name: dev deploy dockerimage
 
 on:
   push:
     branches:    
-      - 'main'
+      - 'development'
 
 jobs:
   dockerimagereleaser:
@@ -16,12 +16,11 @@ jobs:
     # this is a simple way of using date and time to do versioning.
     - name: Modify scripts and get version
       id: version
-      run: |
-        output=$(date -u '+%Y%d%m%H%M%S')
-        echo ::set-output name=date_version::$output
+      run: echo ::set-output name=date_version::$(date -u '+%Y%d%m%H%M%S')
 
-    - name: Set short sha env
-      run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+    - name: Show short sha
+      id: sha
+      run: echo ::set-output name=short_sha::$(echo ${GITHUB_SHA} | cut -c1-8)
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
@@ -33,13 +32,6 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    # - name: Set up Docker Buildx
-    #   id: buildx
-    #   uses: docker/setup-buildx-action@v2
-
-    # - name: Available platforms
-    #   run: echo ${{ steps.buildx.outputs.platforms }}
-
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
@@ -48,7 +40,29 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          docker.io/seanmcguigan/poker:development-${{ env.SHORT_SHA}}-${{steps.version.outputs.date_version}}
+          docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
+    
+    - name: Run tests in the development environment
+      run: echo "Runing integration tests"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       # - name: install svu
       #   run: |

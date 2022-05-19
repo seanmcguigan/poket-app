@@ -1,3 +1,5 @@
+![development workflow](https://github.com/seanmcguigan/poker-app/actions/workflows/development.yaml/badge.svg)
+
 ## poker-app
 
 #### tag for release - v1.0.0

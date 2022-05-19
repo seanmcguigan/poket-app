@@ -18,7 +18,7 @@ jobs:
     - name: Modify scripts and get version
       id: version
       run: |
-        output=$(date -u '+%Y%m%d%H%M%S')
+        output=$(date -u '+%Y%d%m%H%M%S')
         echo ::set-output name=date_version::$output
 
     - name: Set short sha env
@@ -49,7 +49,7 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          docker.io/seanmcguigan/poker:${{ env.SHORT_SHA}}-${{steps.version.outputs.date_version}}
+          docker.io/seanmcguigan/poker:development-${{ env.SHORT_SHA}}-${{steps.version.outputs.date_version}}
 
       # - name: install svu
       #   run: |

@@ -21,7 +21,7 @@ jobs:
     - name: Set short sha env
       run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
 
-    = name: Show short sha v2
+    - name: Show short sha v2
       id: sha
       run: echo ::set-output name=short_sha::$(echo ${GITHUB_SHA} | cut -c1-8)
 

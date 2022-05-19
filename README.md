@@ -1,4 +1,4 @@
-![development workflow](https://github.com/seanmcguigan/poker-app/actions/workflows/development.yaml/badge.svg)
+![development workflow](https://github.com/seanmcguigan/poker-app/actions/workflows/development-cd.yaml/badge.svg)
 
 ## poker-app
 

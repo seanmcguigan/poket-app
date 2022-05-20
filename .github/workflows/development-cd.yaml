@@ -16,11 +16,11 @@ jobs:
     # this is a simple way of using date and time to do versioning.
     - name: Modify scripts and get version
       id: version
-      run: echo ::set-output name=date_version::$(date -u '+%Y%d%m%H%M%S')
+      run: echo ::set-output name=date_version::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
 
     - name: Show short sha
       id: sha
-      run: echo ::set-output name=short_sha::$(echo ${GITHUB_SHA} | cut -c1-8)
+      run: echo ::set-output name=short_sha::$(echo ${GITHUB_SHA::8})
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1

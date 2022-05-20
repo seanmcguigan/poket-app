@@ -40,7 +40,7 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          docker.io/seanmcguigan/poker:development-9676f107-20222005098888
+          docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-22222222222222
     
     - name: Check image been deployed to the development environment.
       run: echo "GitHub Dispatches"

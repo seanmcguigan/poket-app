@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": false,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "lint": "eslint .  --ext .js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
     "less": "~2.0.0",
     "less-middleware": "~1.0.4",
     "socket.io": "~1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.16.0"
   }
 }

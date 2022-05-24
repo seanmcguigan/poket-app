@@ -47,6 +47,10 @@ jobs:
       working-directory: ./src/Poker
       run: yarn --prefer-offline --frozen-lockfile
 
+    - name: Yarn lint
+      working-directory: ./src/Poker
+      run: yarn lint
+
     - name: Build and push
       uses: docker/build-push-action@v3
       with:

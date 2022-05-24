@@ -1,4 +1,4 @@
-FROM node:buster
+FROM node:18.2.0-bullseye-slim
 
 RUN groupadd --gid 5000 nonroot \
 && useradd -d /home/nonroot --create-home --uid 5000 --gid 5000 --shell /bin/bash --skel /dev/null nonroot

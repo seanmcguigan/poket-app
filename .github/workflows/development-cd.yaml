@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [18.x, 16.x, 14.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -43,7 +43,7 @@ jobs:
         cache: yarn
         cache-dependency-path: ./src/Poker/yarn.lock
 
-    - name: Install dependencies
+    - name: Install dependencies and build
       working-directory: ./src/Poker
       run: yarn --prefer-offline --frozen-lockfile
 

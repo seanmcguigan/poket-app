@@ -10,6 +10,10 @@ jobs:
   dockerimagereleaser:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [18.x]
+
     steps:
     - uses: actions/checkout@v2
 
@@ -32,6 +36,17 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: yarn
+        cache-dependency-path: ./src/Poker/yarn.lock
+
+    - name: Install dependencies
+      working-directory: ./src/Poker
+      run: yarn --prefer-offline --frozen-lockfile
+
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
@@ -47,22 +62,6 @@ jobs:
 
     - name: Run tests in the development environment
       run: echo "Running integration tests"
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       # - name: install svu
       #   run: |

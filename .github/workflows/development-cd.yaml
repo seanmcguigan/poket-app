@@ -66,24 +66,3 @@ jobs:
 
     - name: Run tests in the development environment
       run: echo "Running integration tests"
-
-      # - name: install svu
-      #   run: |
-      #     echo 'deb [trusted=yes] https://apt.fury.io/caarlos0/ /' | sudo tee /etc/apt/sources.list.d/caarlos0.list
-      #     sudo apt update
-      #     sudo apt install svu
-      
-      # # check if we need to bump tags
-      # - name: check for release
-      #   run: |
-      #     if [ $(svu next) == $(svu current) ]; then
-      #       echo "tag match - skip release" &&  echo "do-release=false" >> $GITHUB_ENV
-      #     else
-      #       echo "tag mismatch - tagging for new release" &&  echo "do-release=true" >> $GITHUB_ENV
-      #     fi
-      
-      # - name: Tag new version
-      #   if: ${{ env.do-release == 'true' }}
-      #   run: |
-      #     git tag $(svu next)
-      #     git push --tags

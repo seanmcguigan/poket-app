@@ -17,10 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: yarn
+        cache-dependency-path: ./src/Poker/yarn.lock
+
+    - name: Install dependencies and build
+      working-directory: ./src/Poker
+      run: yarn --prefer-offline --frozen-lockfile
 
       - name: Yarn lint
         working-directory: ./src/Poker

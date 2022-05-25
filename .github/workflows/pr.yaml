@@ -9,14 +9,28 @@ on:
 jobs:
   validate-pr:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
     steps:
       - uses: actions/checkout@v2
       
-      - name: linting
-        run: echo "Runiing linting tests"
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
+          cache-dependency-path: ./src/Poker/yarn.lock
+
+      - name: Install dependencies and build
+        working-directory: ./src/Poker
+        run: yarn --prefer-offline --frozen-lockfile
+
+      - name: Yarn lint
+        working-directory: ./src/Poker
+        run: yarn lint
 
       - name: unit tests
-        run: echo "Runiing unit tests"
-      
-
-
+        run: echo "Running unit tests"

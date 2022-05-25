@@ -45,7 +45,7 @@ jobs:
 
     - name: Install dependencies and build
       working-directory: ./src/Poker
-      run: barn --prefer-offline --frozen-lockfile
+      run: yarn --prefer-offline --frozen-lockfile
 
     - name: Yarn lint
       working-directory: ./src/Poker

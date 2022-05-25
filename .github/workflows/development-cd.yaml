@@ -1,5 +1,5 @@
 # Package and deploy docker image
-name: dev deploy dockerimage
+name: CI development
 
 on:
   push:

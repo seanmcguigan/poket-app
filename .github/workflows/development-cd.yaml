@@ -6,7 +6,7 @@ on:
     branches:    
       - 'development'
 
-obs:
+jobs:
   dockerimagereleaser:
     runs-on: ubuntu-latest
 
@@ -45,7 +45,7 @@ obs:
 
     - name: Install dependencies and build
       working-directory: ./src/Poker
-      run: yarn --prefer-offline --frozen-lockfile
+      run: barn --prefer-offline --frozen-lockfile
 
     - name: Yarn lint
       working-directory: ./src/Poker

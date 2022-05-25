@@ -1,9 +1,9 @@
 ![development workflow](https://github.com/seanmcguigan/poker-app/actions/workflows/development-cd.yaml/badge.svg)
 ![pr workflow](https://github.com/seanmcguigan/poker-app/actions/workflows/pr.yaml/badge.svg)
 
-![PR Workflow](https://github.com/seanmcguigan/poker-app/workflows/pull request validation/badge.svg)(https://github.com/seanmcguigan/poker-app/actions)
+[![test](https://github.com/Nklya/test-actions/workflows/test/badge.svg)](https://github.com/Nklya/test-actions/actions?query=workflow%3Atest)
 
-[![PR Workflow](https://github.com/seanmcguigan/poker-app/workflows/pull request validation/badge.svg)](https://github.com/seanmcguigan/poker-app/actions?query=workflow%3Apull+request+validation)
+[![PR Workflow](https://github.com/seanmcguigan/poker-app/workflows/pull+request+validation/badge.svg)]
 
 
 

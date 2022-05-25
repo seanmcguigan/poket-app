@@ -3,9 +3,9 @@
 
 [![test](https://github.com/Nklya/test-actions/workflows/test/badge.svg)](https://github.com/Nklya/test-actions/actions?query=workflow%3Atest)
 
-[![PR Workflow](https://github.com/seanmcguigan/poker-app/workflows/pull+request+validation/badge.svg)]
+[![PR Workflow](https://github.com/seanmcguigan/poker-app/workflows/pull%20request%20validation/badge.svg)]
 
-
+# (https://github.com/seanmcguigan/poker-app/actions?query=workflow%3Apull+request+validation)
 
 ## poker-app
 

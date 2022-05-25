@@ -5,6 +5,8 @@
 
 [![pull request validation](https://github.com/seanmcguigan/poker-app/actions/workflows/pr.yaml/badge.svg?event=pull_request)](https://github.com/seanmcguigan/poker-app/actions/workflows/pr.yaml)
 
+[![pull request validation](https://github.com/seanmcguigan/poker-app/actions/workflows/pr.yaml/badge.svg?event=workflow_run)](https://github.com/seanmcguigan/poker-app/actions/workflows/pr.yaml)
+
 
 ## poker-app
 

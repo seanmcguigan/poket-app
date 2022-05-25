@@ -1,7 +1,5 @@
 
-[![Development Workflow](https://github.com/seanmcguigan/poker-app/workflows/dev%20deploy%20dockerimage/badge.svg)](https://github.com/seanmcguigan/poker-app/actions?query=workflow%3A"dev%20deploy%20dockerimage")
-
-[![PR Workflow](https://github.com/seanmcguigan/poker-app/workflows/pull%20request%20validation/badge.svg)](https://github.com/seanmcguigan/poker-app/actions?query=workflow%3A"pull%20request%20validation")
+[![dev deploy dockerimage](https://github.com/seanmcguigan/poker-app/actions/workflows/development-cd.yaml/badge.svg?branch=development)](https://github.com/seanmcguigan/poker-app/actions/workflows/development-cd.yaml)
 
 ## poker-app
 

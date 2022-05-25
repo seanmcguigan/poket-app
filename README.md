@@ -3,6 +3,10 @@
 
 ![PR Workflow](https://github.com/seanmcguigan/poker-app/workflows/pull request validation/badge.svg)(https://github.com/seanmcguigan/poker-app/actions)
 
+[![PR Workflow](https://github.com/seanmcguigan/poker-app/workflows/pull request validation/badge.svg)](https://github.com/seanmcguigan/poker-app/actions?query=workflow%3Apull+request+validation)
+
+
+
 ## poker-app
 
 #### tag for release - v1.0.0

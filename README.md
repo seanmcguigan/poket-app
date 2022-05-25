@@ -1,6 +1,7 @@
 ![development workflow](https://github.com/seanmcguigan/poker-app/actions/workflows/development-cd.yaml/badge.svg)
 ![pr workflow](https://github.com/seanmcguigan/poker-app/actions/workflows/pr.yaml/badge.svg)
 
+[![PR Workflow](https://github.com/seanmcguigan/poker-app/workflows/pull request validation/badge.svg)](https://github.com/seanmcguigan/poker-app/actions)
 
 ## poker-app
 

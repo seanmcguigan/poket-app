@@ -19,9 +19,6 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'javascript' ]
-
-    strategy:
-      matrix:
         node-version: [18.x]
 
     steps:

@@ -12,11 +12,11 @@
   },
   "dependencies": {
     "connect": "~3.7.0",
-    "express": "~3.4.7",
+    "express": "~4.18.1",
     "jade": "~1.11.0",
-    "less": "~2.0.0",
-    "less-middleware": "~1.0.4",
-    "socket.io": "~2.4.0"
+    "less": "~4.1.2",
+    "less-middleware": "~3.1.0",
+    "socket.io": "~4.5.1"
   },
   "devDependencies": {
     "eslint": "^8.16.0"

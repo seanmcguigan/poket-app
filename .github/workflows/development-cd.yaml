@@ -54,7 +54,7 @@ jobs:
         tags: |
           docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
     
-     name: Run Trivy vulnerability scanner
+    - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: 'docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}'

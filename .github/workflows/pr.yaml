@@ -3,6 +3,8 @@ name: pull request validation
 
 on:
   pull_request:
+    paths-ignore:
+      - 'README.md'
     branches:
       - development
 
@@ -15,8 +17,6 @@ jobs:
       contents: read
       security-events: write
 
-    strategy:
-      fail-fast: false
       matrix:
         language: [ 'javascript' ]
         node-version: [18.x]

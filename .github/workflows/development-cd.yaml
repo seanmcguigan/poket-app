@@ -3,6 +3,8 @@ name: CI development
 
 on:
   push:
+    paths-ignore:
+      - '**/README.md'
     branches:    
       - 'development'
 

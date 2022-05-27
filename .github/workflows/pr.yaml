@@ -4,7 +4,7 @@ name: pull request validation
 on:
   pull_request:
     paths-ignore:
-      - 'README.md'
+      - '**/README.md'
     branches:
       - development
 

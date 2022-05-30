@@ -1,4 +1,4 @@
-# Test PRs and optionally tag for deployment.
+# Test PRs
 name: pull request validation
 
 on:

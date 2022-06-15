@@ -1,0 +1,12 @@
+name: test-github-dispatch-provider
+on:
+  repository_dispatch:
+    types: [Kustomization/poker.flux-system]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          MESSAGE: ${{ github.event.client_payload.message }}
+        run: echo $MESSAGE

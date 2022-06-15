@@ -8,5 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - env:
-          MESSAGE: ${{ github.event.client_payload }}
+          MESSAGE: ${{ github.event.client_payload.metadata.summary }}
         run: echo $MESSAGE

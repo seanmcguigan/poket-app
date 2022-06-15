@@ -4,9 +4,9 @@ on:
     types: [Kustomization/poker.flux-system]
 
 jobs:
-  run:
+  run_if_failure:
     runs-on: ubuntu-latest
     steps:
       - env:
-          MESSAGE: ${{ github.event.client_payload.metadata }}
+          MESSAGE: ${{ github.event.client_payload }}
         run: echo $MESSAGE

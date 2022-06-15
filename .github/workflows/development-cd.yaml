@@ -1,4 +1,4 @@
-# Package and deploy docker image
+## Package and deploy docker image
 name: CI development
 
 on:

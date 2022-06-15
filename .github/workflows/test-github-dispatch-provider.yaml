@@ -9,4 +9,7 @@ jobs:
     steps:
       - env:
           MESSAGE: ${{ github.event.client_payload.metadata.summary }}
-        run: echo $MESSAGE
+          PASSED: ${{ github.event.client_payload.passed }}
+        run: |
+          echo $MESSAGE
+          echo $PASSED

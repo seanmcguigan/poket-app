@@ -70,8 +70,8 @@ jobs:
       with:
         sarif_file: 'trivy-results.sarif'
     
-    # - name: sleep
-    #   run: sleep 75
+    - name: sleep
+      run: sleep 75
     
     - name: Check image deployment.
       uses: lewagon/wait-on-check-action@master

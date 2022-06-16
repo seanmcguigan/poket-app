@@ -5,6 +5,7 @@ on:
 
 jobs:
   release_confirmation:
+    name: confirm release
     if: github.event.client_payload.message  == 'HelmRelease/formidable/poker configured'
     runs-on: ubuntu-latest
     steps:

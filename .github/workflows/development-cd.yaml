@@ -76,7 +76,7 @@ jobs:
         ref: ${{ github.ref }}
         check-name: 'confirm release'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 10
+        wait-interval: 60
 
     - name: Run tests in the development environment
       run: echo "Running integration tests"

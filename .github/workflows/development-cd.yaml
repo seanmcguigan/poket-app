@@ -47,7 +47,7 @@ jobs:
       working-directory: ./src/Poker
       run: yarn --prefer-offline --frozen-lockfile
 
-    - name: Build and push # split this up into build/scan/push 
+    - name: Build and push # split this up into build/scan/push.
       uses: docker/build-push-action@v3
       with:
         context: ./

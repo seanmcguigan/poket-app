@@ -70,8 +70,10 @@ jobs:
       with:
         sarif_file: 'trivy-results.sarif'
     
-    - name: Check image deployment.
+    - name: sleep
       run: sleep 90
+    
+    - name: Check image deployment.
       uses: lewagon/wait-on-check-action@v1.1.1
       with:
         ref: ${{ github.ref }}

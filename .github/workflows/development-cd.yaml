@@ -11,7 +11,7 @@ on:
 jobs:
   dockerimagereleaser:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 4
 
     strategy:
       matrix:
@@ -71,7 +71,7 @@ jobs:
         sarif_file: 'trivy-results.sarif'
     
     - name: sleep
-      run: sleep 90
+      run: sleep 75
     
     - name: Check image deployment.
       uses: lewagon/wait-on-check-action@v1.1.1

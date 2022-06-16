@@ -74,11 +74,11 @@ jobs:
     #   run: sleep 75
     
     - name: Check image deployment.
-      uses: lewagon/wait-on-check-action@v1.1.1
+      uses: lewagon/wait-on-check-action@master
       with:
         ref: ${{ github.ref }}
-        #check-name: 'confirm release'
-        running-workflow-name: 'github-dispatch-release-confirmation'
+        check-name: 'confirm release'
+        #running-workflow-name: 'github-dispatch-release-confirmation'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         wait-interval: 20
         allowed-conclusions: success

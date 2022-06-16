@@ -1,15 +1,13 @@
-name: test-github-dispatch-provider
+name: github-dispatch-release-confirmation
 on:
   repository_dispatch:
     types: [Kustomization/poker.flux-system]
 
 jobs:
-  run_if_failure:
+  release_confirmation:
+    if: github.event.client_payload.message  == 'HelmRelease/formidable/poker configured'
     runs-on: ubuntu-latest
     steps:
       - env:
           SUMMARY: ${{ github.event.client_payload.metadata.summary }}
-          MESSAGE: ${{ github.event.client_payload.message }}
-        run: |
-          echo $MESSAGE
-          echo $SUMMARY
+        run: echo $SUMMARY

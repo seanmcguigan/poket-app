@@ -70,6 +70,25 @@ jobs:
       with:
         sarif_file: 'trivy-results.sarif'
     
+    # Install the cosign tool
+    # https://github.com/sigstore/cosign-installer
+    - name: Install cosign
+      uses: sigstore/cosign-installer@main
+      with:
+        cosign-release: 'v1.9.0'
+    
+    - name: Check install!
+      run: cosign version
+    
+    - name: Write signing key to disk
+      run: echo "${{ secrets.SIGNING_SECRET }}" > cosign.key
+    
+    - name: Sign container image
+      run: |
+        cosign sign --key docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
+      env:
+        COSIGN_PASSWORD: ""
+
     - name: sleep
       run: sleep 75
     
@@ -84,5 +103,5 @@ jobs:
         allowed-conclusions: success
 
     - name: Run tests in the development environment
-      run: echo "Running integration tests, or not running tests, your choice."
+      run: echo "Running integration tests, or not running integration tests, your choice."
       

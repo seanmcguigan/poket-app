@@ -90,7 +90,7 @@ jobs:
         COSIGN_PASSWORD: ""
 
     - name: sleep
-      run: sleep 75
+      run: sleep 90
     
     - name: Check image deployment.
       uses: lewagon/wait-on-check-action@master

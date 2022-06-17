@@ -85,7 +85,7 @@ jobs:
     
     - name: Sign container image
       run: |
-        cosign sign --key docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
+        cosign sign --key cosign.key docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
       env:
         COSIGN_PASSWORD: ""
 

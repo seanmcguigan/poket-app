@@ -99,7 +99,7 @@ jobs:
         #running-workflow-name: 'github-dispatch-release-confirmation'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         wait-interval: 90
-        allowed-conclusions: success,skipped,
+        allowed-conclusions: success,skipped
 
     - name: Run tests in the development environment
       run: echo "Running integration tests, or not running integration tests, your choice."

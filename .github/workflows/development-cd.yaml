@@ -88,8 +88,8 @@ jobs:
       env:
         COSIGN_PASSWORD: ""
 
-    # - name: sleep
-    #   run: sleep 85
+    - name: sleep
+      run: sleep 80
     
     - name: Check image deployment.
       uses: lewagon/wait-on-check-action@v1.1.1
@@ -98,7 +98,7 @@ jobs:
         check-name: 'confirm release'
         #running-workflow-name: 'github-dispatch-release-confirmation'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 90
+        wait-interval: 10
         allowed-conclusions: success,skipped
 
     - name: Run tests in the development environment

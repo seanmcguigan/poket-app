@@ -47,7 +47,7 @@ jobs:
       run: yarn --prefer-offline --frozen-lockfile
 
     - name: Build and push # split this up into build/scan/push.
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v4
       with:
         context: ./
         file: ./Dockerfile

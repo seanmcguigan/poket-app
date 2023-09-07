@@ -1,4 +1,20 @@
 template: |
+  ## Previous release tag
+
+  $PREVIOUS_TAG
+
   ## What's changed
 
   $CHANGES
+
+  ## Contributions
+
+  $CONTRIBUTORS
+
+  ## Repo
+
+  $REPOSITORY
+
+  ## Owner
+
+  $REPOSITORY

@@ -1,106 +1,106 @@
-## Package and deploy docker image
-name: CI development
+# ## Package and deploy docker image
+# name: CI development
 
-on:
-  push:
-    paths-ignore:
-      - '**/README.md'
-    branches:    
-      - 'development'
+# on:
+#   push:
+#     paths-ignore:
+#       - '**/README.md'
+#     branches:    
+#       - 'development'
 
-jobs:
-  dockerimagereleaser:
-    runs-on: ubuntu-latest
-    timeout-minutes: 4
+# jobs:
+#   dockerimagereleaser:
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 4
 
-    strategy:
-      matrix:
-        node-version: [18.x]
+#     strategy:
+#       matrix:
+#         node-version: [18.x]
 
-    steps:
-    - uses: actions/checkout@v3
+#     steps:
+#     - uses: actions/checkout@v3
 
-    - name: Modify scripts and get version
-      id: version
-      run: echo ::set-output name=date_version::$(date -u +'%Y%m%d%H%M%S')
+#     - name: Modify scripts and get version
+#       id: version
+#       run: echo ::set-output name=date_version::$(date -u +'%Y%m%d%H%M%S')
 
-    - name: Show short sha
-      id: sha
-      run: echo ::set-output name=short_sha::$(echo ${GITHUB_SHA::8})
+#     - name: Show short sha
+#       id: sha
+#       run: echo ::set-output name=short_sha::$(echo ${GITHUB_SHA::8})
 
-    - name: Login to DockerHub
-      uses: docker/login-action@v2
-      with:
-        registry: docker.io
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+#     - name: Login to DockerHub
+#       uses: docker/login-action@v2
+#       with:
+#         registry: docker.io
+#         username: ${{ secrets.DOCKERHUB_USERNAME }}
+#         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: yarn
-        cache-dependency-path: ./src/Poker/yarn.lock
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#         cache: yarn
+#         cache-dependency-path: ./src/Poker/yarn.lock
 
-    - name: Install dependencies and build
-      working-directory: ./src/Poker
-      run: yarn --prefer-offline --frozen-lockfile
+#     - name: Install dependencies and build
+#       working-directory: ./src/Poker
+#       run: yarn --prefer-offline --frozen-lockfile
 
-    - name: Build and push # split this up into build/scan/push.
-      uses: docker/build-push-action@v3
-      with:
-        context: ./
-        file: ./Dockerfile
-        platforms: linux/amd64
-        push: true
-        tags: |
-          docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
+#     - name: Build and push # split this up into build/scan/push.
+#       uses: docker/build-push-action@v3
+#       with:
+#         context: ./
+#         file: ./Dockerfile
+#         platforms: linux/amd64
+#         push: true
+#         tags: |
+#           docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
     
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
-        image-ref: 'docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}'
-        format: 'sarif'
-        output: 'trivy-results.sarif'
-        severity: 'CRITICAL'
+#     - name: Run Trivy vulnerability scanner
+#       uses: aquasecurity/trivy-action@master
+#       with:
+#         image-ref: 'docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}'
+#         format: 'sarif'
+#         output: 'trivy-results.sarif'
+#         severity: 'CRITICAL'
 
-    - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: 'trivy-results.sarif'
+#     - name: Upload Trivy scan results to GitHub Security tab
+#       uses: github/codeql-action/upload-sarif@v2
+#       with:
+#         sarif_file: 'trivy-results.sarif'
     
-    # Install the cosign tool
-    # https://github.com/sigstore/cosign-installer
-    - name: Install cosign
-      uses: sigstore/cosign-installer@main
-      with:
-        cosign-release: 'v1.9.0'
+#     # Install the cosign tool
+#     # https://github.com/sigstore/cosign-installer
+#     - name: Install cosign
+#       uses: sigstore/cosign-installer@main
+#       with:
+#         cosign-release: 'v1.9.0'
     
-    - name: Check install!
-      run: cosign version
+#     - name: Check install!
+#       run: cosign version
     
-    - name: Write signing key to disk
-      run: echo "${{ secrets.SIGNING_SECRET }}" > cosign.key
+#     - name: Write signing key to disk
+#       run: echo "${{ secrets.SIGNING_SECRET }}" > cosign.key
     
-    - name: Sign container image
-      run: |
-        cosign sign --key cosign.key docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
-      env:
-        COSIGN_PASSWORD: ""
+#     - name: Sign container image
+#       run: |
+#         cosign sign --key cosign.key docker.io/seanmcguigan/poker:development-${{steps.sha.outputs.short_sha}}-${{steps.version.outputs.date_version}}
+#       env:
+#         COSIGN_PASSWORD: ""
 
-    - name: sleep
-      run: sleep 80
+#     - name: sleep
+#       run: sleep 80
     
-    - name: Check image deployment.
-      uses: lewagon/wait-on-check-action@v1.1.1
-      with:
-        ref: ${{ github.ref }}
-        check-name: 'confirm release'
-        #running-workflow-name: 'github-dispatch-release-confirmation'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 10
-        allowed-conclusions: success,skipped
+#     - name: Check image deployment.
+#       uses: lewagon/wait-on-check-action@v1.1.1
+#       with:
+#         ref: ${{ github.ref }}
+#         check-name: 'confirm release'
+#         #running-workflow-name: 'github-dispatch-release-confirmation'
+#         repo-token: ${{ secrets.GITHUB_TOKEN }}
+#         wait-interval: 10
+#         allowed-conclusions: success,skipped
 
-    - name: Run tests in the development environment
-      run: echo "Running integration tests, or not running integration tests, your choice."
+#     - name: Run tests in the development environment
+#       run: echo "Running integration tests, or not running integration tests, your choice."
       

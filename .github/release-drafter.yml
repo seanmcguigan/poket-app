@@ -1,4 +1,6 @@
-template: |
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+template: |  
   ## Previous release tag
 
   $PREVIOUS_TAG
@@ -6,6 +8,10 @@ template: |
   ## Changelog
 
   $CHANGES
+
+  ## Full changelog
+
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 
   ## Contributions
 
@@ -17,4 +23,4 @@ template: |
 
   ## Owner
 
-  $REPOSITORY
+  $OWNER

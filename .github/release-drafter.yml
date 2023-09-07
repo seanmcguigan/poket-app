@@ -3,7 +3,7 @@ template: |
 
   $PREVIOUS_TAG
 
-  ## What's changed
+  ## Changelog
 
   $CHANGES
 

@@ -1,11 +1,10 @@
 name: Release Drafter
 
-on: 
-  workflow_dispatch:
-    inputs:
-      name:
-        description: "Who to greet"
-        default: "World"
+on:
+  push:
+    # branches to consider in the event; optional, defaults to all
+    branches:
+      - master
 
 permissions:
   contents: read

@@ -11,7 +11,7 @@ template: |
 
   ## Full changelog
 
-  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...HEAD
 
   ## Contributions
 
@@ -25,17 +25,17 @@ template: |
 
   $OWNER
 
-version-resolver:
-  major:
-    labels:
-      - 'major'
-  minor:
-    labels:
-      - 'minor'
-  patch:
-    labels:
-      - 'patch'
-  default: patch
+# version-resolver:
+#   major:
+#     labels:
+#       - 'major'
+#   minor:
+#     labels:
+#       - 'minor'
+#   patch:
+#     labels:
+#       - 'patch'
+#   default: patch
 
 # The above config controls the output of the $RESOLVED_VERSION variable.
 

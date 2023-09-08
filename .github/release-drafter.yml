@@ -11,7 +11,7 @@ template: |
 
   ## Full changelog
 
-  https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...$RESOLVED_VERSION
+  https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 
   ## Diff
 

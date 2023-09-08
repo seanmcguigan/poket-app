@@ -15,7 +15,7 @@ template: |
 
   ## Diff
 
-  https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...Main
+  https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...HEAD
 
   ## Contributions
 

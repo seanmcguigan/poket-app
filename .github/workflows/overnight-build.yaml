@@ -3,6 +3,11 @@ name: "Overnight build"
 on:
   schedule:
     - cron: '*/5 * * * *'
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Who to greet"
+        default: "World"
 
 jobs:
   latest_commit_sha:

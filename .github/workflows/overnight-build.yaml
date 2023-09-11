@@ -1,5 +1,4 @@
-name:
-  Overnight build
+name: Overnight build
  
 on:
   # Triggers the workflow every 5 minutes

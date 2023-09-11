@@ -20,9 +20,11 @@ jobs:
       id: vars
       run: |
         calculatedSha=$(git rev-parse --short ${{ github.sha }})
-        echo "{short_sha}={$calculatedSha}" >> $GITHUB_OUTPUT
+        echo "{SHORT_SHA}={$calculatedSha}" >> $GITHUB_OUTPUT
 
-    # - name: export calclatedSha
+    - name: export calclatedSha
+      run: |
+        sed -i -E "/SHORT_SHA/s/[0-9a-zA-Z]{7}+$/$calculatedSha/g" .github/variables/env
 
     - name: Set Environment Variables
       uses: tw3lveparsecs/github-actions-set-variables@latest

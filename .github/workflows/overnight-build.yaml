@@ -1,13 +1,12 @@
 name: "Overnight build"
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
-    inputs:
-      name:
-        description: "Who to greet"
-        default: "World"
 
 jobs:
   latest_commit_sha:
@@ -16,15 +15,17 @@ jobs:
     - name: checkout
       uses: actions/checkout@v3
 
-    - name: export calclatedSha
+    - name: export short sha
       run: |
         sed -i -E "/SHORT_SHA/s/[0-9a-zA-Z]{7}+$/$(git rev-parse --short ${{ github.sha }})/g" .github/variables/env
 
-    - name: Set Environment Variables
-      uses: tw3lveparsecs/github-actions-set-variables@latest
+    - name: eet environment variables
+      uses: tw3lveparsecs/github-actions-set-variables@v0,2
       with:
         envFilePath: .github/variables/env
-    
-    - name: get env
-      run: |
-        env
+
+    - name: commit environment variable changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Commit Environment Variable changes"
+        file_pattern: '.github/variables/env'

@@ -26,3 +26,7 @@ jobs:
       uses: tw3lveparsecs/github-actions-set-variables@latest
       with:
         envFilePath: .github/variables/env
+    
+    - name: get env
+      run: |
+        env

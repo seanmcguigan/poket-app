@@ -6,6 +6,8 @@ on:
     branches:
       - development
 
+# run on successfull run of pre-prod build.
+
 permissions:
   contents: read
 

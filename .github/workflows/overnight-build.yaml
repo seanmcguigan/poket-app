@@ -1,0 +1,25 @@
+ name:
+  Overnight build
+ 
+on:
+  # Triggers the workflow every 5 minutes
+  schedule:
+    - cron: "*/1 * * * *"
+ 
+jobs:
+  latest_commit_sha:
+    runs-on: ubuntu-32
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: set short git commit SHA
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "::set-output name=short_sha::$calculatedSha"
+
+      - name: Set Environment Variables
+        uses: tw3lveparsecs/github-actions-set-variables@latest
+        with:
+          envFilePath: .github/variables/env

@@ -24,7 +24,10 @@ jobs:
 
     - name: export calclatedSha
       run: |
+        calculatedSha=$(git rev-parse --short ${{ github.sha }}
+        echo "this is the calculated sha $calculatedSha"
         sed -i -E "/SHORT_SHA/s/[0-9a-zA-Z]{7}+$/$(git rev-parse --short ${{ github.sha }})/g" .github/variables/env
+        echo "this is the content of the env file - $(cat .github/variables/env)" 
 
     - name: Set Environment Variables
       uses: tw3lveparsecs/github-actions-set-variables@latest

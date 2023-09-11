@@ -2,7 +2,7 @@ name: "Overnight build"
 
 on:
   schedule:
-    - cron: '*/1 * * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   latest_commit_sha:

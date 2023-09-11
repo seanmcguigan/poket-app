@@ -16,15 +16,15 @@ jobs:
     - name: checkout
       uses: actions/checkout@v3
 
-    - name: set short git commit SHA
-      id: vars
-      run: |
-        calculatedSha=$(git rev-parse --short ${{ github.sha }})
-        echo "{SHORT_SHA}={$calculatedSha}" >> $GITHUB_OUTPUT
+    # - name: set short git commit SHA
+    #   id: vars
+    #   run: |
+    #     calculatedSha=$(git rev-parse --short ${{ github.sha }})
+    #     echo "{SHORT_SHA}={$calculatedSha}" >> $GITHUB_OUTPUT
 
     - name: export calclatedSha
       run: |
-        sed -i -E "/SHORT_SHA/s/[0-9a-zA-Z]{7}+$/$calculatedSha/g" .github/variables/env
+        sed -i -E "/SHORT_SHA/s/[0-9a-zA-Z]{7}+$/$(git rev-parse --short ${{ github.sha }})/g" .github/variables/env
 
     - name: Set Environment Variables
       uses: tw3lveparsecs/github-actions-set-variables@latest

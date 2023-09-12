@@ -1,20 +1,26 @@
-name: "Overnight build"
+name: Overnight build
+ 
+run-name: Create release draft
 
 on:
   schedule:
     - cron: '0 2 * * *'
   workflow_dispatch:
-
+ 
 jobs:
   latest_commit_sha:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-32
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
 
-    - name: export short sha
-      run: |
-        echo "SHORT_SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
-        env|grep SHORT_SHA
+      - name: set short git commit SHA
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "{short_sha}={$calculatedSha}" >> $GITHUB_OUTPUT
+          env
 
-
+    # - name: match sha
+      # what is the latest staging docker image? 
+      # if [ "staging-$SHORT_SHA" == "staging-$LAST_STAGING_TAG"]
+      # https://github.com/docker/metadata-action

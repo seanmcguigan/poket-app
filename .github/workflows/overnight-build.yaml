@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  latest_commit_sha:
+  short_sha:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -23,4 +23,4 @@ jobs:
 
       - name: echo
         run: | 
-          echo ${{ steps.short_commit_sha.outputs }}
+          echo ${{ steps.short_commit_sha.outputs.short_sha }}

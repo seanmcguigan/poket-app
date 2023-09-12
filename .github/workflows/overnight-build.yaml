@@ -20,7 +20,7 @@ jobs:
         run: |
           short_sha=$(git rev-parse --short ${{ github.sha }})
           echo "Output - $short_sha"
-          echo "{short_sha}={$short_sha}" >> $GITHUB_OUTPUT
+          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
 
       - name: echo
         run: | 

@@ -16,11 +16,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: set short git commit SHA
-        id: short_commit_sha
+        id: short_sha
         run: |
-          calculatedSha=$(git rev-parse --short ${{ github.sha }})
-          echo "{short_sha}={$calculatedSha}" >> $GITHUB_OUTPUT
+          short_sha=$(git rev-parse --short ${{ github.sha }})
+          echo "Output - $short_sha"
+          echo "{short_sha}={$short_sha}" >> $GITHUB_OUTPUT
 
       - name: echo
         run: | 
-          echo "Output ${{ steps.short_commit_sha.outputs.short_sha }}"
+          echo "Output ${{ steps.short_sha.outputs.short_sha }}"

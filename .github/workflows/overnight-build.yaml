@@ -18,5 +18,4 @@ jobs:
       - name: set short git commit SHA
         run: |
           calculatedSha=$(git rev-parse --short ${{ github.sha }})
-          echo "{short_sha}={$calculatedSha}" >> $GITHUB_OUTPUT
-          env
+          echo "::set-output name={short_sha}::{$calculatedSha}"

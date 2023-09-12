@@ -13,9 +13,6 @@ template: |
 
   https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 
-  ## Short Sha
-
-  $SHORT_SHA
   
   ## Diff
 

@@ -21,7 +21,6 @@ jobs:
         id: short_sha
         run: |
           short_sha=$(git rev-parse --short ${{ github.sha }})
-          echo "Output - $short_sha"
           echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
 
       - name: echo
@@ -37,10 +36,10 @@ jobs:
     steps:
       - name: draft
         uses: release-drafter/release-drafter@v5
-        with:
-          commitish: ${{ needs.short_sha.outputs.short_sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          SHORT_SHA: ${{ needs.short_sha.outputs.short_sha }}
       
       - name: env
         run: |

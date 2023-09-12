@@ -13,9 +13,11 @@ template: |
 
   https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 
+  ## Sort Sha target
+
   ## Diff
 
-  https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...HEAD
+  https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...$SHORT_SHA
 
   ## Contributions
 

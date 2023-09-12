@@ -23,4 +23,4 @@ jobs:
 
       - name: echo
         run: | 
-          echo ${{ steps.short_commit_sha.outputs.short_sha }}
+          echo "Output ${{ steps.short_commit_sha.outputs.short_sha }}"

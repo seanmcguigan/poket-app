@@ -37,9 +37,10 @@ jobs:
     steps:
       - name: draft
         uses: release-drafter/release-drafter@v5
+        with:
+          commitish: ${{ needs.short_sha.outputs.short_sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SHORT_SHA: ${{ needs.short_sha.outputs.short_sha }}
       
       - name: env
         run: |

@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   latest_commit_sha:
-    runs-on: ubuntu-32
+    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3

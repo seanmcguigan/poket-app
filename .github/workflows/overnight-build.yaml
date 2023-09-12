@@ -38,7 +38,7 @@ jobs:
       - name: draft
         uses: release-drafter/release-drafter@v5
         with:
-          commitish: ${{ needs.short_sha.outputs.short_sha }}
+          commitish: 8ee03c5f57d6f82596ff67be7c82c172799c44a7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       

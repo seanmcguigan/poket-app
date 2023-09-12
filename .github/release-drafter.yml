@@ -9,7 +9,7 @@ template: |
 
   $CHANGES
 
-  ## Full changelog
+  ## Full changelog(only available once published and tagged.)
 
   https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 

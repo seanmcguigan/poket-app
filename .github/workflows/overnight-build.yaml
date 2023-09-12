@@ -10,6 +10,8 @@ permissions:
 
 jobs:
   short_sha:
+    outputs: 
+      short_sha: ${{ steps.short_sha.outputs.short_sha }}"
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -25,3 +27,21 @@ jobs:
       - name: echo
         run: | 
           echo "Output ${{ steps.short_sha.outputs.short_sha }}"
+  
+  draft_release:
+    needs: short_sha
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: draft
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHORT_SHA: ${{ needs.short_sha.outputs.short_sha }}"
+      
+      - name: env
+        run: |
+          env
+

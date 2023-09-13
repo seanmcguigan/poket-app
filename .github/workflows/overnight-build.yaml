@@ -55,6 +55,7 @@ jobs:
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
+    needs: short_sha
     name: Release
     runs-on: ubuntu-latest
     steps:
@@ -62,7 +63,7 @@ jobs:
         run: |
           echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
           echo "The current prod release tag ${{ needs.short_sha.outputs.current_prod_tag }}"
-          
+
       - name: Create a release draft for a version tag
         id: create-release-draft
         uses: ecampidoglio/auto-release-draft@v1

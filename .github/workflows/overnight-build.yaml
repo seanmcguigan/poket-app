@@ -25,9 +25,11 @@ jobs:
           echo "Output current short sha - $short_sha"
           echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
 
-          prod_tag=$( git describe --tags $(git rev-list --tags --max-count=1))
+          prod_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
           echo "Output current production release tag - $prod_tag"
           echo "prod_tag=$prod_tag" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: echo
         run: | 
@@ -48,3 +50,5 @@ jobs:
         run: |
           echo "The recorded short commit sha ${{ needs.short_sha.outputs.short_sha }}"
           echo "The current prod release tag ${{ needs.short_sha.outputs.short_sha }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -37,14 +37,14 @@ jobs:
       - name: increment tag version for next release
         id: bump_prod_tag
         run: |
-          new_prod_tag=$((++${{ steps.prod_tag.outputs.prod_tag }}))
+          new_prod_tag=$(echo $((++${{ steps.prod_tag.outputs.prod_tag }})))
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
 
       - name: echo
         run: | 
-          echo "Output ${{ steps.short_sha.outputs.short_sha }}"
-          echo "Output ${{ steps.prod_tag.outputs.prod_tag }}"
-          echo "Output ${{ steps.bump_prod_tag.outputs.new_prod_tag }}"
+          echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
+          echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
+          echo "Output new release tag ${{ steps.bump_prod_tag.outputs.new_prod_tag }}"
   
   # draft_release:
   #   needs: short_sha

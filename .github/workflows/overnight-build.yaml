@@ -56,7 +56,7 @@ jobs:
 
   release:
     needs: short_sha
-    name: Release
+    name: release
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -85,7 +85,7 @@ jobs:
           -f body='Description of the release' \
           -F draft=true \
           -F prerelease=false \
-          -F generate_release_notes=true
+          -F generate_release_notes=false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

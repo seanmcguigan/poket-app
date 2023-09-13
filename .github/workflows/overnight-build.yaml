@@ -45,7 +45,7 @@ jobs:
         id: add_prod_tag
         uses: cardinalby/git-tag-action@master
         env:
-          TAG: ${{ steps.bump_prod_tag.outputs.new_prod_tag }}
+          TAG: 12345
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: echo

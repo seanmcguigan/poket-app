@@ -20,18 +20,16 @@ jobs:
         with:
           fetch-depth: "0"
 
-      - name: get short git commit SHA
+      - name: get last commit sha
         id: short_sha
         run: |
           short_sha=$(git rev-parse --short ${{ github.sha }})
-          echo "Output current short sha - $short_sha"
           echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
 
       - name: get last prod tag
         id: prod_tag
         run: |
           prod_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "Output current production release tag - $prod_tag"
           echo "prod_tag=$prod_tag" >> $GITHUB_OUTPUT
 
       - name: echo
@@ -39,19 +37,38 @@ jobs:
           echo "Output ${{ steps.short_sha.outputs.short_sha }}"
           echo "Output ${{ steps.prod_tag.outputs.prod_tag }}"
   
-  draft_release:
-    needs: short_sha
-    permissions:
-      contents: write
-      pull-requests: write
+  # draft_release:
+  #   needs: short_sha
+  #   permissions:
+  #     contents: write
+  #     pull-requests: write
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v3
+
+  #     - name: env
+  #       run: |
+  #         echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
+  #         echo "The current prod release tag ${{ needs.short_sha.outputs.current_prod_tag }}"
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-
       - name: env
         run: |
           echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
           echo "The current prod release tag ${{ needs.short_sha.outputs.current_prod_tag }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Create a release draft for a version tag
+        id: create-release-draft
+        uses: ecampidoglio/auto-release-draft@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Print the URL of the release draft
+        if: steps.create-release-draft.outputs.release-url != ''
+        run: echo ${{ steps.create-release-draft.outputs.release-url }}

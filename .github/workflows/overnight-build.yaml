@@ -56,6 +56,6 @@ jobs:
       - name: env
         run: |
           echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
-          echo "The current prod release tag ${{ needs.prod_tag.outputs.current_prod_tag }}"
+          echo "The current prod release tag ${{ needs.short_sha.outputs.current_prod_tag }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

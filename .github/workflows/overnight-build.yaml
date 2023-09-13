@@ -50,12 +50,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.short_sha.outputs.short_sha }}
-      
+
       - name: env
         run: |
-          echo "The recorded short commit sha ${{ needs.short_sha.outputs.short_sha }}"
-          echo "The current prod release tag ${{ needs.prod_tag.outputs.prod_tag }}"
+          echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
+          echo "The current prod release tag ${{ needs.prod_tag.outputs.current_prod_tag }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

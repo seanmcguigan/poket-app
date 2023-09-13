@@ -37,7 +37,7 @@ jobs:
       - name: increment tag version for next release
         id: bump_prod_tag
         run: |
-          new_prod_tag=$(echo $((++${{ steps.prod_tag.outputs.prod_tag }})))
+          let new_prod_tag=${{ steps.prod_tag.outputs.prod_tag }}+1
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
 
       - name: echo

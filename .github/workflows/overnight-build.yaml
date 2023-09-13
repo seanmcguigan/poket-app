@@ -82,7 +82,7 @@ jobs:
           -f tag_name='v0.2.1' \
           -f target_commitish='main' \
           -f name='v0.2.1' \
-          -f body='Description of the release - ${{ needs.short_sha.outputs.current_short_sha }}' \
+          -f body="Changes https://github.com/seanmcguigan/poker-app/compare/${{ needs.short_sha.outputs.current_short_sha }}...${{ needs.short_sha.outputs.current_prod_tag }}" \
           -F draft=true \
           -F prerelease=false \
           -F generate_release_notes=true

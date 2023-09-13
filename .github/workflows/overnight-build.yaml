@@ -25,7 +25,7 @@ jobs:
           echo "Output current short sha - $short_sha"
           echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
 
-          prod_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
+          prod_tag=$(git tag | sort -V | tail -1)
           echo "Output current production release tag - $prod_tag"
           echo "prod_tag=$prod_tag" >> $GITHUB_OUTPUT
         env:

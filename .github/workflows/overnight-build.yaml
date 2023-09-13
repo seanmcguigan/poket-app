@@ -41,6 +41,13 @@ jobs:
           let new_prod_tag=${{ steps.prod_tag.outputs.prod_tag }}+1
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
 
+      - uses: rickstaa/action-create-tag@v1
+        id: "tag_create"
+        with:
+          tag: ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          
       - name: echo
         run: | 
           echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"

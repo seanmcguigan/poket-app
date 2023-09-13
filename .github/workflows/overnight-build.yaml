@@ -72,7 +72,7 @@ jobs:
       - name: calculate next version
         id: version
         uses: patrickjahns/version-drafter-action@v1
-        with:
+        # with:
           # (Optional) specify config name to use, relative to .github/. Default: version-drafter.yml
           # config-name: my-config.yml
         env:

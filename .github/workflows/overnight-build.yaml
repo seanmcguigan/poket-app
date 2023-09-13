@@ -29,7 +29,7 @@ jobs:
       - name: get previous release tag
         id: prod_tag
         run: |
-          prod_tag=$(gh release view --json name | jq --raw-output .name)
+          prod_tag=$(gh release view --json tagName | jq --raw-output .tagName)
           echo "prod_tag=$prod_tag" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ github.token }}

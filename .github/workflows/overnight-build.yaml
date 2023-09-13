@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: [read, write]
 
 jobs:
   short_sha:
@@ -41,19 +41,11 @@ jobs:
           let new_prod_tag=${{ steps.prod_tag.outputs.prod_tag }}+1
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
 
-      - name: tag for new release
-        id: add_prod_tag
-        uses: cardinalby/git-tag-action@master
-        env:
-          TAG: 12345
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: echo
         run: | 
           echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
           echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
-          echo "Output new release tag ${{ steps.bump_prod_tag.outputs.new_prod_tag }}"
-          env
+          echo "Output new release tag ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}"
   
   # release:
   #   needs: short_sha

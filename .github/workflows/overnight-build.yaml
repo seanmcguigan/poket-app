@@ -30,7 +30,7 @@ jobs:
       - name: get last prod tag
         id: prod_tag
         run: |
-          prod_tag=$(git tag | sort -V | tail -1)
+          prod_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "Output current production release tag - $prod_tag"
           echo "prod_tag=$prod_tag" >> $GITHUB_OUTPUT
         env:

@@ -13,6 +13,7 @@ jobs:
     outputs: 
       current_short_sha: ${{ steps.short_sha.outputs.short_sha }}
       previous_release_tag: ${{ steps.prod_tag.outputs.prod_tag }}
+      new_release_tag: ${{ steps.bump_prod_tag.outputs.new_prod_tag }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -20,7 +21,7 @@ jobs:
         with:
           fetch-depth: "0"
 
-      - name: get current commit sha @HEAD
+      - name: get current commit sha @main
         id: short_sha
         run: |
           short_sha=$(git rev-parse --short ${{ github.sha }})
@@ -35,34 +36,25 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       - name: increment tag version for next release
-        id: bump_prod_tag
+        id: calculate_prod_tag
         run: |
           let new_prod_tag=${{ steps.prod_tag.outputs.prod_tag }}+1
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
+
+      - name: tag for new release
+        id: add_prod_tag
+        uses: cardinalby/git-tag-action@master
+        env:
+          TAG: ${{ steps.bump_prod_tag.outputs.new_prod_tag }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: echo
         run: | 
           echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
           echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
           echo "Output new release tag ${{ steps.bump_prod_tag.outputs.new_prod_tag }}"
+          env
   
-  # draft_release:
-  #   needs: short_sha
-  #   permissions:
-  #     contents: write
-  #     pull-requests: write
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: env
-  #       run: |
-  #         echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
-  #         echo "The current prod release tag ${{ needs.short_sha.outputs.current_prod_tag }}"
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   # release:
   #   needs: short_sha
   #   name: release
@@ -74,6 +66,7 @@ jobs:
   #       run: |
   #         echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
   #         echo "The current prod release tag ${{ needs.short_sha.outputs.previous_release_tag }}"
+  #         echo "The new prod release tag ${{ needs.short_sha.outputs.new+release_tag }}"
 
   #     - name: checkout
   #       uses: actions/checkout@v3
@@ -85,9 +78,9 @@ jobs:
   #       run: |
   #         gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
   #         /repos/seanmcguigan/poker-app/releases \
-  #         -f tag_name='v0.2.2' \
+  #         -f tag_name=${{ needs.short_sha.outputs.new+release_tag }} \
   #         -f target_commitish='main' \
-  #         -f name='v0.2.2' \
+  #         -f name=${{ needs.short_sha.outputs.new+release_tag }} \
   #         -f body='Description of the release' \
   #         -F draft=true \
   #         -F prerelease=false \

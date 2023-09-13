@@ -26,8 +26,6 @@ jobs:
           short_sha=$(git rev-parse --short ${{ github.sha }})
           echo "Output current short sha - $short_sha"
           echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: get last prod tag
         id: prod_tag
@@ -35,8 +33,6 @@ jobs:
           prod_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "Output current production release tag - $prod_tag"
           echo "prod_tag=$prod_tag" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: echo
         run: | 

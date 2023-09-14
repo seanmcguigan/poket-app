@@ -16,7 +16,7 @@ jobs:
     outputs: 
       current_short_sha: ${{ steps.short_sha.outputs.short_sha }}
       previous_release_tag: ${{ steps.prod_tag.outputs.prod_tag }}
-      new_release_tag: ${{ steps.bump_prod_tag.outputs.calculate_prod_tag }}
+      new_release_tag: ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout

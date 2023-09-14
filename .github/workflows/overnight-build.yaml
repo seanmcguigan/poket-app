@@ -85,7 +85,7 @@ jobs:
         run: |
           for draft in $(gh api -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/{{ env.OWNER }}/{{ env.REPO }}/releases \
+            /repos/$OWNER/$REPO/releases \
             | jq --raw-output '.[] | select(.draft==true) | .id')
           do 
             echo draft is $draft; 
@@ -97,7 +97,7 @@ jobs:
       - name: create new draft release
         run: |
           gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
-          /repos/{{ env.OWNER }}/{{ env.REPO }}/releases \
+          /repos/$OWNER/$REPO/releases \
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f target_commitish='main' \
           -f name=${{ needs.short_sha.outputs.new_release_tag }} \

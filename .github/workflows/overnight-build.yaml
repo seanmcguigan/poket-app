@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  APP: "skeleton-application-frontend"
+
 jobs:
   short_sha:
     outputs: 
@@ -38,10 +41,12 @@ jobs:
       - name: increment tag version for next release
         id: calculate_prod_tag
         run: |
-          let new_prod_tag=${{ steps.prod_tag.outputs.prod_tag }}+1
+          new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ github.run_number }}"
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
-
-      - uses: rickstaa/action-create-tag@v1
+      
+      # always tags the latest master with the next incremental release tag.
+      - name: tag latest
+        uses: rickstaa/action-create-tag@v1
         id: "tag_create"
         with:
           tag: ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}
@@ -55,35 +60,35 @@ jobs:
           echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
           echo "Output new release tag ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}"
   
-  # release:
-  #   needs: short_sha
-  #   name: release
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: env
-  #       run: |
-  #         echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
-  #         echo "The current prod release tag ${{ needs.short_sha.outputs.previous_release_tag }}"
-  #         echo "The new prod release tag ${{ needs.short_sha.outputs.new_release_tag }}"
+  release:
+    needs: short_sha
+    name: release
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: env
+        run: |
+          echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
+          echo "The current prod release tag ${{ needs.short_sha.outputs.previous_release_tag }}"
+          echo "The new prod release tag ${{ needs.short_sha.outputs.new_release_tag }}"
 
-  #     - name: checkout
-  #       uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: "0"
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
 
-  #     # Create a release draft      
-  #     - name: create draft
-  #       run: |
-  #         gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
-  #         /repos/seanmcguigan/poker-app/releases \
-  #         -f tag_name=${{ needs.short_sha.outputs.new+release_tag }} \
-  #         -f target_commitish='main' \
-  #         -f name=${{ needs.short_sha.outputs.new+release_tag }} \
-  #         -f body='Description of the release' \
-  #         -F draft=true \
-  #         -F prerelease=false \
-  #         -F generate_release_notes=false
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Create a release draft      
+      - name: create draft
+        run: |
+          gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/seanmcguigan/poker-app/releases \
+          -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
+          -f target_commitish='main' \
+          -f name=${{ needs.short_sha.outputs.new+release_tag }} \
+          -f body='Description of the release' \
+          -F draft=true \
+          -F prerelease=false \
+          -F generate_release_notes=false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

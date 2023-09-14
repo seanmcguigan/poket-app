@@ -85,7 +85,7 @@ jobs:
           /repos/seanmcguigan/poker-app/releases \
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f target_commitish='main' \
-          -f name=${{ needs.short_sha.outputs.new+release_tag }} \
+          -f name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f body='Description of the release' \
           -F draft=true \
           -F prerelease=false \

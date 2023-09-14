@@ -109,6 +109,6 @@ jobs:
           -f body='Description of the release' \
           -F draft=true \
           -F prerelease=false \
-          -F generate_release_notes=false
+          -F generate_release_notes=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -112,3 +112,6 @@ jobs:
           -F generate_release_notes=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       
+      # Check latest staging docker image tag matches the draft github tag.
+      - name: verify tags

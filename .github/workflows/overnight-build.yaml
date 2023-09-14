@@ -106,7 +106,7 @@ jobs:
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f target_commitish='main' \
           -f name=${{ needs.short_sha.outputs.new_release_tag }} \
-          -f body='Description of the release' \
+          -f body='' \
           -F draft=true \
           -F prerelease=false \
           -F generate_release_notes=true

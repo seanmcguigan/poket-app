@@ -107,7 +107,7 @@ jobs:
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f target_commitish="main" \
           -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
-          -f configuration_file_path="".github/release.yml" | jq --raw-output .body)
+          -f configuration_file_path=".github/release.yml" | jq --raw-output .body)
           echo "Notes: $notes"
 #          echo "notes=$notes" >> $GITHUB_OUTPUT
         env:

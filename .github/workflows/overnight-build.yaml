@@ -114,8 +114,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Create  draft release notes      
-      - name: create  draft release notes
-        run: 
+      - name: create draft release notes
+        run: |
           gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
           /repos/$OWNER/$REPO/releases/generate-notes \
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \

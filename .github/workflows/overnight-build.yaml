@@ -112,24 +112,26 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: values
-      #   run: |
-      #     echo ${{ steps.release_content.outputs.notes }}
-
-      # Create a release draft      
-      - name: create new draft release
+      - name: values
         run: |
-          gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
-          /repos/$OWNER/$REPO/releases \
-          -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
-          -f target_commitish='main' \
-          -f name=${{ needs.short_sha.outputs.new_release_tag }} \
-          -f body=${{ steps.release_content.outputs.notes }} \
-          -F draft=true \
-          -F prerelease=false \
-          -F generate_release_notes=false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo ${{ steps.release_content.outputs.notes }}
+          echo
+          echo \"${{ steps.release_content.outputs.notes }}\"
+
+      # # Create a release draft      
+      # - name: create new draft release
+      #   run: |
+      #     gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+      #     /repos/$OWNER/$REPO/releases \
+      #     -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
+      #     -f target_commitish='main' \
+      #     -f name=${{ needs.short_sha.outputs.new_release_tag }} \
+      #     -f body=${{ steps.release_content.outputs.notes }} \
+      #     -F draft=true \
+      #     -F prerelease=false \
+      #     -F generate_release_notes=false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Check latest staging docker image tag matches the draft github tag.
 #      - name: verify tags

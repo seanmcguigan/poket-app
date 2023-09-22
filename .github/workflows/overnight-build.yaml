@@ -102,20 +102,20 @@ jobs:
       - name: create draft release notes
         id: "release_content"
         run: |
-          echo 'JSON_RESPONSE<<EOF' >> $GITHUB_OUTPUT
-          gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+          notes=$(gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
           /repos/$OWNER/$REPO/releases/generate-notes \
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f target_commitish="main" \
           -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
-          -f configuration_file_path=".github/release.yml" >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          -f configuration_file_path=".github/release.yml" | jq .body)
+          echo "notes=$notes" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: values
         run: |
-          echo ${{ steps.release_content.outputs.JSON_RESPONSE }}
+          echo -e ${{ steps.release_content.outputs.notes }} >> /tmp/release-notes
+          cat /tmp/release-notes
 
       # # Create a release draft      
       # - name: create new draft release

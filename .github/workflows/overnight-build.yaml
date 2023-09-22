@@ -108,7 +108,6 @@ jobs:
           -f target_commitish="main" \
           -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
           -f configuration_file_path=".github/release.yml" | jq --raw-output .body)
-#          echo "Notes: $notes"
           echo "notes=$notes" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -116,8 +115,6 @@ jobs:
       - name: values
         run: |
           echo ${{ steps.release_content.outputs.notes }}
-          echo
-          echo \"${{ steps.release_content.outputs.notes }}\"
 
       # # Create a release draft      
       # - name: create new draft release

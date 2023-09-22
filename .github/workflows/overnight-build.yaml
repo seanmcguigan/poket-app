@@ -107,7 +107,7 @@ jobs:
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f target_commitish='main' \
           -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
-          -f configuration_file_path='.github/release.yml')
+          -f configuration_file_path='.github/release.yml' | jq --raw-output .body)
           echo "notes=$notes" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -124,7 +124,7 @@ jobs:
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f target_commitish='main' \
           -f name=${{ needs.short_sha.outputs.new_release_tag }} \
-          -f body=$(echo ${{ steps.release_content.outputs.notes }} | jq --raw-output .body) \
+          -f body=${{ steps.release_content.outputs.notes }} \
           -F draft=true \
           -F prerelease=false \
           -F generate_release_notes=false

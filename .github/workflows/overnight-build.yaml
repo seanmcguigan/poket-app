@@ -109,7 +109,18 @@ jobs:
           -f body='' \
           -F draft=true \
           -F prerelease=false \
-          -F generate_release_notes=true
+          -F generate_release_notes=false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Create  draft release notes      
+      - name: create  draft release notes
+        run: 
+          gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/$OWNER/$REPO/releases/generate-notes \
+          -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
+          -f target_commitish='main' \
+          -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        

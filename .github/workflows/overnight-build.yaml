@@ -108,7 +108,8 @@ jobs:
           -f target_commitish="main" \
           -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
           -f configuration_file_path="".github/release.yml" | jq --raw-output .body)
-          echo "notes=\"$notes\"" >> $GITHUB_OUTPUT
+          echo "Notes: $notes"
+#          echo "notes=$notes" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -23,3 +23,4 @@ foo
 bar
 bug fix
 new feature
+nice hols

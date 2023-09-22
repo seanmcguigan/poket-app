@@ -121,6 +121,7 @@ jobs:
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f target_commitish='main' \
           -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
+          -f configuration_file_path='' 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        

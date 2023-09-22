@@ -122,9 +122,9 @@ jobs:
           gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
           /repos/$OWNER/$REPO/releases \
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
-          -f target_commitish='main' \
-          -f name=${{ needs.short_sha.outputs.new_release_tag }} \
-          -f body=$(echo \"${{ steps.release_content.outputs.notes }}\") \
+          -f target_commitish="main" \
+          -f name="${{ needs.short_sha.outputs.new_release_tag }}" \
+          -f body="${{ steps.release_content.outputs.notes }}" \
           -F draft=true \
           -F prerelease=false \
           -F generate_release_notes=false

@@ -109,14 +109,8 @@ jobs:
           -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
           -f configuration_file_path=".github/release.yml" | jq .body)
           echo -e "$notes" > /tmp/release-notes
-# echo "notes=$notes" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: values
-      #   run: |
-      #     echo -e ${{ steps.release_content.outputs.notes }} > /tmp/release-notes
-      #     cat /tmp/release-notes
 
       # Create a release draft      
       - name: create new draft release

@@ -112,9 +112,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: sleep 60
+      - name: sleep 10
         run: |
-          sleep 60
+          sleep 10
       
       # Create  draft release notes      
       - name: create draft release notes
@@ -124,7 +124,7 @@ jobs:
           -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
           -f target_commitish='main' \
           -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
-          -f configuration_file_path='' 
+          -f configuration_file_path='.github/release.yml'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        

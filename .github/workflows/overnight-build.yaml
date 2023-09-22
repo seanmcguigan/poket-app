@@ -114,7 +114,7 @@ jobs:
 
       - name: values
         run: |
-          echo ${{ steps.release_content.outputs.notes }}
+          echo -e ${{ steps.release_content.outputs.notes }}
 
       # # Create a release draft      
       # - name: create new draft release

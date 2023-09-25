@@ -12,7 +12,6 @@ env:
   IMAGE_REPO: 907375451839.dkr.ecr.eu-west-1.amazonaws.com/futrli/skeleton-application-frontend
   AWS_REGION: "eu-west-1"
 
-
 jobs:
   git_tag:
     name: Git tag master for release.
@@ -150,10 +149,10 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Retag test/image:dev as test/image:staging and test/image:production
+      - name: ECR pre-prod tag
         uses: abronin/ecr-retag-action@v1
         with:
-          repository: ${{ env.IMAGE_REPO }}
+          repository: "907375451839.dkr.ecr.eu-west-1.amazonaws.com/futrli/skeleton-application-frontend"
           tag: staging-e10sf45-10
           new-tags: pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ github.run_number }}
 

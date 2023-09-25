@@ -152,7 +152,7 @@ jobs:
       - name: ECR pre-prod tag
         uses: abronin/ecr-retag-action@v1
         with:
-          repository: "907375451839.dkr.ecr.eu-west-1.amazonaws.com/futrli/skeleton-application-frontend"
+          repository: "futrli/skeleton-application-frontend"
           tag: staging-e10sf45-10
           new-tags: pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ github.run_number }}
 

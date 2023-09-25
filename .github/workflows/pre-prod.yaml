@@ -10,6 +10,7 @@ env:
   OWNER: "seanmcguigan"
   REPO: "poker-app"
   IMAGE_REPO: 907375451839.dkr.ecr.eu-west-1.amazonaws.com/futrli/skeleton-application-frontend
+  AWS_REGION: "eu-west-1"
 
 
 jobs:
@@ -134,7 +135,7 @@ jobs:
 
   docker_tag:
     needs: release
-    name: docker tag and push to ECR.
+    name: Docker tag and push to ECR.
     runs-on: ubuntu-latest
     steps:
       # Check latest staging docker image tag matches the draft github tag.

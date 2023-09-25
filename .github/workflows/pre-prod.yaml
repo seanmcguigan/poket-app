@@ -84,8 +84,7 @@ jobs:
       - name: delete draft releases
         run: |
           for RELEASE_ID in $(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/$OWNER/$REPO/releases \
-            | jq --raw-output '.[] | select(.draft==true) | .id')
+            /repos/$OWNER/$REPO/releases jq --raw-output '.[] | select(.draft==true) | .id')
           do 
             echo deleting draft $RELEASE_ID
             gh api \
@@ -106,8 +105,8 @@ jobs:
           -f tag_name=${{ needs.tag.outputs.new_release_tag }} \
           -f target_commitish="main" \
           -f previous_tag_name=${{ needs.tag.outputs.previous_release_tag }} \
-          -f configuration_file_path=".github/release.yml" | jq .body)
-          echo -e "$notes" | sed -e 's/^"//' -e 's/"$//' > /tmp/release-notes
+          -f configuration_file_path=".github/release.yml" | jq -r '.body')
+          echo -e "$notes" > /tmp/release-notes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

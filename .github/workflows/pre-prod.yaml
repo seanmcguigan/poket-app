@@ -123,7 +123,7 @@ jobs:
           -f tag_name=${{ needs.tag.outputs.new_release_tag }} \
           -f target_commitish="main" \
           -f name="${{ needs.tag.outputs.new_release_tag }}" \
-          -f body="$(cat /tmp/release-notes)" \
+          -f body="$(cat /tmp/release-notes | sed -e 's/^"//' -e 's/"$//')" \
           -F draft=true \
           -F prerelease=false \
           -F generate_release_notes=false

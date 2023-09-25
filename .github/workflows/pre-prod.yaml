@@ -14,7 +14,7 @@ env:
   REPO: "poker-app"
 
 jobs:
-  short_sha:
+  tag:
     outputs: 
       current_short_sha: ${{ steps.short_sha.outputs.short_sha }}
       previous_release_tag: ${{ steps.prod_tag.outputs.prod_tag }}
@@ -46,7 +46,7 @@ jobs:
           new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ github.run_number }}"
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
       
-      # always tags the latest master with the next incremental release tag.
+      # always tags the latest master with the next calculated release tag
       - name: tag latest
         uses: rickstaa/action-create-tag@v1
         id: "tag_create"
@@ -56,24 +56,24 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: echo
+      - name: outputs
         run: | 
           echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
           echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
           echo "Output new release tag ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}"
   
   release:
-    needs: short_sha
+    needs: tag
     name: draft release
     permissions:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - name: env
+      - name: outputs
         run: |
-          echo "The recorded short commit sha ${{ needs.short_sha.outputs.current_short_sha }}"
-          echo "The current prod release tag ${{ needs.short_sha.outputs.previous_release_tag }}"
-          echo "The new prod release tag ${{ needs.short_sha.outputs.new_release_tag }}"
+          echo "The recorded short commit sha ${{ needs.tag.outputs.current_short_sha }}"
+          echo "The current prod release tag ${{ needs.tag.outputs.previous_release_tag }}"
+          echo "The new prod release tag ${{ needs.tag.outputs.new_release_tag }}"
 
       - name: checkout
         uses: actions/checkout@v3
@@ -83,8 +83,7 @@ jobs:
       # Close existing draft releases
       - name: delete draft releases
         run: |
-          for RELEASE_ID in $(gh api -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
+          for RELEASE_ID in $(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/$OWNER/$REPO/releases \
             | jq --raw-output '.[] | select(.draft==true) | .id')
           do 
@@ -104,22 +103,26 @@ jobs:
         run: |
           notes=$(gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
           /repos/$OWNER/$REPO/releases/generate-notes \
-          -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
+          -f tag_name=${{ needs.tag.outputs.new_release_tag }} \
           -f target_commitish="main" \
-          -f previous_tag_name=${{ needs.short_sha.outputs.previous_release_tag }} \
+          -f previous_tag_name=${{ needs.tag.outputs.previous_release_tag }} \
           -f configuration_file_path=".github/release.yml" | jq .body)
           echo -e "$notes" > /tmp/release-notes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: cat
+        run: |
+          cat /tmp/release-notes
 
       # Create a release draft      
       - name: create new draft release
         run: |
           gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
           /repos/$OWNER/$REPO/releases \
-          -f tag_name=${{ needs.short_sha.outputs.new_release_tag }} \
+          -f tag_name=${{ needs.tag.outputs.new_release_tag }} \
           -f target_commitish="main" \
-          -f name="${{ needs.short_sha.outputs.new_release_tag }}" \
+          -f name="${{ needs.tag.outputs.new_release_tag }}" \
           -f body="$(cat /tmp/release-notes)" \
           -F draft=true \
           -F prerelease=false \
@@ -128,4 +131,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Check latest staging docker image tag matches the draft github tag.
-#      - name: verify tags
+      # kicks off the docker tag workflow - with args

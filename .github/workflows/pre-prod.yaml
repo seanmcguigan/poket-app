@@ -133,7 +133,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   docker_tag:
-    needs: release
+    needs: [git_tag, release]
     name: Docker tag and push to ECR.
     runs-on: ubuntu-latest
     steps:

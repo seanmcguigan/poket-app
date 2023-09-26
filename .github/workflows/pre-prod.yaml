@@ -150,20 +150,30 @@ jobs:
       - name: ECR login
         uses: aws-actions/amazon-ecr-login@v1
 
-      # Get the latest staging tag and compare it to whats been captured in ${{ needs.git_tag.outputs.current_short_sha }}
-      - name: Check staging image tag exists
+      # Get the latest staging docker image tag and confirm it matches whats been captured in ${{ needs.git_tag.outputs.current_short_sha }}
+      - name: Get the latest staging image tag and compare.
+        id: "latest_staging_tag"
         run: |
-          aws ecr describe-images --output json --repository-name futrli/${{ env.APP }} \
-          --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[*]' --output text | \
-          grep -Eo "staging-${{ needs.git_tag.outputs.current_short_sha }}" || exit 1
+          tag=$(aws ecr describe-images --output json --repository-name futrli/${{ env.APP }} \
+          --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[*]' --output text | grep -Eo "staging-[a-z0-9]+-[0-9]+")
 
+          if [[ "$tag" == *"staging-${{ needs.git_tag.outputs.current_short_sha }}"* ]]
+          then
+            echo "matched: *"staging-${{ needs.git_tag.outputs.current_short_sha }}"* in $tag"
+            echo "tag=$tag" >> $GITHUB_OUTPUT
+          else
+            echo "no matches found"
+            exit 1
+          fi
+          
       - name: ECR pre-prod tag
         uses: abronin/ecr-retag-action@v1
         with:
           repository: "futrli/skeleton-application-frontend"
-          tag: "staging-e10sf45-10"
+          tag: ${{ steps.latest_staging_tag.outputs.tag }}
           new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ github.run_number }}"
 
       # kicks off the docker tag workflow - with args
       # delete ecr user
+      # sort out env vars $VAR ${{ env.VAR }}
 

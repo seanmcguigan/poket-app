@@ -113,10 +113,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: cat
-        run: |
-          cat /tmp/release-notes
-
       # Create a release draft      
       - name: create new draft release
         run: |
@@ -152,8 +148,14 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: ECR login
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+
+      # Get the latest staging tag and compare it to whats been captured in ${{ needs.git_tag.outputs.current_short_sha }}
+      - name: Check staging image tag exists
+        run: |
+          aws ecr describe-images --output json --repository-name futrli/${{ env.APP }} \
+          --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[*]' --output text | \
+          grep -Eo "staging-${{ needs.git_tag.outputs.current_short_sha }}" || exit 1
 
       - name: ECR pre-prod tag
         uses: abronin/ecr-retag-action@v1

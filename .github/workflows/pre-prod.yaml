@@ -71,7 +71,7 @@ jobs:
           echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
           echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
           echo "Output new release tag ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}"
-          echo "Output build date ${{ needs.current_date.outputs.date }}"
+          echo "Output build date ${{ steps.date.outputs.date }}"
   
   release:
     needs: git_tag

@@ -25,16 +25,16 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+
       - name: Get current date
         id: date
         run: |
           date=$(date +%Y%m%d%H%M%S)
           echo date=$date >> $GITHUB_OUTPUT
-
-      - name: checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: "0"
 
       - name: get current commit sha @main
         id: short_sha
@@ -53,7 +53,7 @@ jobs:
       - name: increment tag version for next release
         id: calculate_prod_tag
         run: |
-          new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ needs.current_date.outputs.date }}"
+          new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ steps.date.outputs.date }}"
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
       
       # always tags the latest master with the next calculated release tag

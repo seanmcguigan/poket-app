@@ -180,7 +180,7 @@ jobs:
         with:
           repository: "futrli/${{ env.APP }}"
           tag: "${{ steps.latest_staging_tag.outputs.tag }}"
-          new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.current_date.outputs.date }}"
+          new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
 
       # kicks off the docker tag workflow - with args
       # delete ecr user

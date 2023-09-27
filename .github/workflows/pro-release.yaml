@@ -1,0 +1,34 @@
+name: "Prod-Release"
+
+on:
+  workflow_dispatch:
+
+env:
+  APP: "skeleton-application-frontend"
+  OWNER: "seanmcguigan"
+  REPO: "poker-app"
+  IMAGE_REPO: 907375451839.dkr.ecr.eu-west-1.amazonaws.com/futrli/skeleton-application-frontend
+  AWS_REGION: "eu-west-1"
+
+jobs:
+  docker_tag:
+    name: Docker tag and push to ECR.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: ECR login
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: ECR prod tag
+        uses: abronin/ecr-retag-action@v1
+        with:
+          repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
+          tag: "${{ steps.latest_staging_tag.outputs.tag }}"
+          new-tags: "prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
+

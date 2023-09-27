@@ -14,9 +14,11 @@ env:
 
 jobs:
   git_tag:
-    name: Git tag master for release.
+    name: Git tag master for release
+
     permissions:
       contents: write
+
     outputs: 
       current_short_sha: ${{ steps.short_sha.outputs.short_sha }}
       previous_release_tag: ${{ steps.prod_tag.outputs.prod_tag }}
@@ -36,7 +38,7 @@ jobs:
           date=$(date +%Y%m%d%H%M%S)
           echo date=$date >> $GITHUB_OUTPUT
 
-      - name: get current commit sha @main
+      - name: get current commit sha @master
         id: short_sha
         run: |
           short_sha=$(git rev-parse --short ${{ github.sha }})
@@ -66,12 +68,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: outputs
-        run: | 
-          echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
-          echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
-          echo "Output new release tag ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}"
-          echo "Output build date ${{ steps.date.outputs.date }}"
+      # - name: outputs
+      #   run: | 
+      #     echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
+      #     echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
+      #     echo "Output new release tag ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}"
+      #     echo "Output build date ${{ steps.date.outputs.date }}"
   
   release:
     needs: git_tag
@@ -143,15 +145,14 @@ jobs:
     name: Docker tag and push to ECR.
     runs-on: ubuntu-latest
     steps:
-      - name: outputs
-        run: |
-          echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
-          echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
-          echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
-          echo "Output build date ${{ needs.git_tag.outputs.current_date }}"
+      # - name: outputs
+      #   run: |
+      #     echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
+      #     echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
+      #     echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
+      #     echo "Output build date ${{ needs.git_tag.outputs.current_date }}"
 
-      # Check latest staging docker image tag matches the draft github tag.
-      - name: Configure AWS Credentials
+      - name: configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -162,25 +163,52 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       # Get the latest staging docker image tag and confirm it matches whats been captured in ${{ needs.git_tag.outputs.current_short_sha }}
-      - name: Get the latest staging image tag and compare.
+      - name: get the latest staging image tag and compare.
         id: "latest_staging_tag"
         run: |
           tag=$(aws ecr describe-images --output json --repository-name futrli/${{ env.APP }} \
-          --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[*]' --output text | grep -Eo "staging-[a-z0-9]+-[0-9]+")
+          --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[*]' --output text | grep -Eo "staging-.{7}-[0-9]+")
 
           if [[ "$tag" == *"staging-${{ needs.git_tag.outputs.current_short_sha }}"* ]]; then
             echo -e "latest image tags:\n$tag\n\nmatch git short sha:\nstaging-${{ needs.git_tag.outputs.current_short_sha }}"
             echo tag=$tag >> $GITHUB_OUTPUT
           else
-            echo "tags don't match"; exit 1
+            echo "tags don't match, exiting.."; exit 1
           fi
           
       - name: ECR pre-prod tag
         uses: abronin/ecr-retag-action@v1
         with:
-          repository: "futrli/${{ env.APP }}"
+          repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
           tag: "${{ steps.latest_staging_tag.outputs.tag }}"
           new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
+
+      - name: store pre-prod tag
+        run: |
+          var_list=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/seanmcguigan/poker-app/actions/variables | jq --raw-output .variables[].name)
+
+          for var_name in $var_list
+          do
+            if [ "${var_name}" = "LATEST_PRE_PROD_IMAGE_TAG" ]
+            then
+              echo "${var_name} exists: patching ${var_name}"
+              gh api --method PATCH -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+              /repos/$OWNER/$REPO/actions/variables/LATEST_PRE_PROD_IMAGE_TAG \
+              -f name='LATEST_PRE_PROD_IMAGE_TAG' \
+              -f value="pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
+              break
+            else
+              echo "${var_name} does not exist: creating ${var_name}"
+              gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+              /repos/$OWNER/$REPO/actions/variables \
+              -f name='LATEST_PRE_PROD_IMAGE_TAG' \
+              -f value="pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
+              break
+          fi
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # kicks off the docker tag workflow - with args
       # delete ecr user

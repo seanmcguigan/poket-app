@@ -168,8 +168,8 @@ jobs:
       - name: ECR pre-prod tag
         uses: abronin/ecr-retag-action@v1
         with:
-          repository: "futrli/skeleton-application-frontend"
-          tag: ${{ steps.latest_staging_tag.outputs.tag }}
+          repository: "futrli/${{ env.APP }}"
+          tag: "${{ steps.latest_staging_tag.outputs.tag }}"
           new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ env.NOW }}"
 
       # kicks off the docker tag workflow - with args

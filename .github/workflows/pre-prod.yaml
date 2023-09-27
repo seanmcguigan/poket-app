@@ -11,6 +11,7 @@ env:
   REPO: "poker-app"
   IMAGE_REPO: 907375451839.dkr.ecr.eu-west-1.amazonaws.com/futrli/skeleton-application-frontend
   AWS_REGION: "eu-west-1"
+  NOW: $(date +%Y%m%d%H%M%S)
 
 jobs:
   git_tag:
@@ -45,7 +46,7 @@ jobs:
       - name: increment tag version for next release
         id: calculate_prod_tag
         run: |
-          new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ github.run_number }}"
+          new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ env.NOW }}"
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
       
       # always tags the latest master with the next calculated release tag
@@ -168,9 +169,8 @@ jobs:
       #   with:
       #     repository: "futrli/skeleton-application-frontend"
       #     tag: ${{ steps.latest_staging_tag.outputs.tag }}
-      #     new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ github.run_number }}"
+      #     new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ env.NOW }}"
 
       # kicks off the docker tag workflow - with args
       # delete ecr user
       # sort out env vars $VAR ${{ env.VAR }}
-

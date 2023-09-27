@@ -11,7 +11,6 @@ env:
   REPO: "poker-app"
   IMAGE_REPO: 907375451839.dkr.ecr.eu-west-1.amazonaws.com/futrli/skeleton-application-frontend
   AWS_REGION: "eu-west-1"
-  NOW: $(date +%Y%m%d%H%M%S)
 
 jobs:
   git_tag:
@@ -22,8 +21,14 @@ jobs:
       current_short_sha: ${{ steps.short_sha.outputs.short_sha }}
       previous_release_tag: ${{ steps.prod_tag.outputs.prod_tag }}
       new_release_tag: ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}
+      current_date: ${{ steps.date.outputs.date }}
+
     runs-on: ubuntu-latest
     steps:
+      - name: Get current date
+        id: date
+        run: echo date=$date >> $(date +%Y%m%d%H%M%S)
+
       - name: checkout
         uses: actions/checkout@v3
         with:
@@ -46,7 +51,7 @@ jobs:
       - name: increment tag version for next release
         id: calculate_prod_tag
         run: |
-          new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ env.NOW }}"
+          new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ needs.current_date.outputs.date }}"
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
       
       # always tags the latest master with the next calculated release tag
@@ -64,6 +69,7 @@ jobs:
           echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
           echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
           echo "Output new release tag ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}"
+          echo "The build date ${{ needs.current_date.outputs.date }}"
   
   release:
     needs: git_tag
@@ -77,6 +83,7 @@ jobs:
           echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
           echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
           echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
+          echo "The build date ${{ needs.current_date.outputs.date }}"
 
       - name: checkout
         uses: actions/checkout@v3
@@ -139,6 +146,7 @@ jobs:
           echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
           echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
           echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
+          echo "The build date ${{ needs.current_date.outputs.date }}"
 
       # Check latest staging docker image tag matches the draft github tag.
       - name: Configure AWS Credentials
@@ -170,7 +178,7 @@ jobs:
         with:
           repository: "futrli/${{ env.APP }}"
           tag: "${{ steps.latest_staging_tag.outputs.tag }}"
-          new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ env.NOW }}"
+          new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.current_date.outputs.date }}"
 
       # kicks off the docker tag workflow - with args
       # delete ecr user

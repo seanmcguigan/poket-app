@@ -27,7 +27,9 @@ jobs:
     steps:
       - name: Get current date
         id: date
-        run: echo date=$date >> $(date +%Y%m%d%H%M%S)
+        run: |
+          date=$(date +%Y%m%d%H%M%S)
+          echo date=$date >> $GITHUB_OUTPUT
 
       - name: checkout
         uses: actions/checkout@v3
@@ -69,7 +71,7 @@ jobs:
           echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
           echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
           echo "Output new release tag ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}"
-          echo "The build date ${{ needs.current_date.outputs.date }}"
+          echo "Output build date ${{ needs.current_date.outputs.date }}"
   
   release:
     needs: git_tag
@@ -83,7 +85,7 @@ jobs:
           echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
           echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
           echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
-          echo "The build date ${{ needs.current_date.outputs.date }}"
+          echo "Output build date ${{ needs.current_date.outputs.date }}"
 
       - name: checkout
         uses: actions/checkout@v3
@@ -146,7 +148,7 @@ jobs:
           echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
           echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
           echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
-          echo "The build date ${{ needs.current_date.outputs.date }}"
+          echo "Output build date ${{ needs.current_date.outputs.date }}"
 
       # Check latest staging docker image tag matches the draft github tag.
       - name: Configure AWS Credentials

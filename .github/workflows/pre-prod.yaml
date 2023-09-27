@@ -160,16 +160,17 @@ jobs:
 
           if [[ "$tag" == *"staging-${{ needs.git_tag.outputs.current_short_sha }}"* ]]; then
             echo -e "latest image tags:\n$tag\n\nmatch git short sha:\nstaging-${{ needs.git_tag.outputs.current_short_sha }}"
+            echo tag=$tag >> $GITHUB_OUTPUT
           else
             echo "tags don't match"; exit 1
           fi
           
-      # - name: ECR pre-prod tag
-      #   uses: abronin/ecr-retag-action@v1
-      #   with:
-      #     repository: "futrli/skeleton-application-frontend"
-      #     tag: ${{ steps.latest_staging_tag.outputs.tag }}
-      #     new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ env.NOW }}"
+      - name: ECR pre-prod tag
+        uses: abronin/ecr-retag-action@v1
+        with:
+          repository: "futrli/skeleton-application-frontend"
+          tag: ${{ steps.latest_staging_tag.outputs.tag }}
+          new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ env.NOW }}"
 
       # kicks off the docker tag workflow - with args
       # delete ecr user

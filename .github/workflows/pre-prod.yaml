@@ -81,12 +81,12 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - name: outputs
-        run: |
-          echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
-          echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
-          echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
-          echo "Output build date ${{ needs.git_tag.outputs.current_date }}"
+      # - name: outputs
+      #   run: |
+      #     echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
+      #     echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
+      #     echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
+      #     echo "Output build date ${{ needs.git_tag.outputs.current_date }}"
 
       - name: checkout
         uses: actions/checkout@v3
@@ -184,30 +184,78 @@ jobs:
 
       - name: store pre-prod tag
         run: |
-          var_list=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
-          /repos/seanmcguigan/poker-app/actions/variables | jq --raw-output .variables[].name)
+          var_list=($(
+            gh api -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/$OWNER/$REPO/actions/variables \
+            | jq --raw-output .variables[].name))
 
-          for var_name in $var_list
-          do
-            if [ "${var_name}" = "LATEST_PRE_PROD_IMAGE_TAG" ]
-            then
-              echo "${var_name} exists: patching ${var_name}"
-              gh api --method PATCH -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
-              /repos/$OWNER/$REPO/actions/variables/LATEST_PRE_PROD_IMAGE_TAG \
-              -f name='LATEST_PRE_PROD_IMAGE_TAG' \
-              -f value="pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
-              break
-            else
-              echo "${var_name} does not exist: creating ${var_name}"
-              gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
-              /repos/$OWNER/$REPO/actions/variables \
-              -f name='LATEST_PRE_PROD_IMAGE_TAG' \
-              -f value="pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
-              break
+          post () {
+            gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/$OWNER/$REPO/actions/variables \
+            -f name='LATEST_PRE_PROD_IMAGE_TAG' \
+            -f value="pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
+          }
+
+          patch () {
+            gh api \
+            --method PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/$OWNER/$REPO/actions/variables/LATEST_PRE_PROD_IMAGE_TAG \
+            -f name='LATEST_PRE_PROD_IMAGE_TAG' \
+            -f value="pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
+          }
+
+          if [ ${#var_list[@]} -gt 0 ]
+          then
+            for var_name in $var_list
+            do
+              if [ "${var_name}" = "LATEST_PRE_PROD_IMAGE_TAG" ]
+              then
+                echo "updating existing variable $var_name"
+                patch
+                break
+              else
+                echo "variable $var_name not found creating"
+                post
+                break
+              fi
+            done
+          else
+            echo "no variables found creating LATEST_PRE_PROD_IMAGE_TAG variable"
+            post
           fi
-          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        #   var_list=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+        #   /repos/seanmcguigan/poker-app/actions/variables | jq --raw-output .variables[].name)
+
+        #   for var_name in $var_list
+        #   do
+        #     if [ "${var_name}" = "LATEST_PRE_PROD_IMAGE_TAG" ]
+        #     then
+        #       echo "${var_name} exists: patching ${var_name}"
+        #       gh api --method PATCH -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+        #       /repos/$OWNER/$REPO/actions/variables/LATEST_PRE_PROD_IMAGE_TAG \
+        #       -f name='LATEST_PRE_PROD_IMAGE_TAG' \
+        #       -f value="pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
+        #       break
+        #     else
+        #       echo "${var_name} does not exist: creating ${var_name}"
+        #       gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+        #       /repos/$OWNER/$REPO/actions/variables \
+        #       -f name='LATEST_PRE_PROD_IMAGE_TAG' \
+        #       -f value="pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
+        #       break
+        #   fi
+        #   done
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # kicks off the docker tag workflow - with args
       # delete ecr user

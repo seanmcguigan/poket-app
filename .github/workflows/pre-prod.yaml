@@ -16,8 +16,7 @@ jobs:
   git_tag:
     name: Git tag master for release
 
-    permissions:
-      contents: write
+    permissions: write-all
 
     outputs: 
       current_short_sha: ${{ steps.short_sha.outputs.short_sha }}

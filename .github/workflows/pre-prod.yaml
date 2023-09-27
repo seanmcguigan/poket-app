@@ -85,7 +85,7 @@ jobs:
           echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
           echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
           echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
-          echo "Output build date ${{ needs.current_date.outputs.date }}"
+          echo "Output build date ${{ needs.git_tag.outputs.current_date }}"
 
       - name: checkout
         uses: actions/checkout@v3
@@ -148,7 +148,7 @@ jobs:
           echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
           echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
           echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
-          echo "Output build date ${{ needs.current_date.outputs.date }}"
+          echo "Output build date ${{ needs.git_tag.outputs.current_date }}"
 
       # Check latest staging docker image tag matches the draft github tag.
       - name: Configure AWS Credentials

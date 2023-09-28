@@ -232,7 +232,8 @@ jobs:
             echo "no variables found creating LATEST_PRE_PROD_IMAGE_TAG variable"
             post
           fi
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # kicks off the docker tag workflow - with args
       # delete ecr user
       # sort out env vars $VAR ${{ env.VAR }}

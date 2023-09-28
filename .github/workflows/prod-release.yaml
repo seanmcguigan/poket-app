@@ -43,7 +43,9 @@ jobs:
 
       - name: ECR prod tag
         uses: abronin/ecr-retag-action@v1
+        env:
+          LATEST_PRE_PROD_IMAGE_TAG : ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
         with:
           repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
-          tag: $(echo ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }})
+          tag: ${{ env.LATEST_PRE_PROD_IMAGE_TAG }}
           new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}}"

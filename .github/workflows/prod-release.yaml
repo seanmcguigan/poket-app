@@ -34,9 +34,16 @@ jobs:
       - name: ECR login
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: ECR prod tag
-        uses: abronin/ecr-retag-action@v1
-        with:
-          repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
-          tag: ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
-          new-tags: "prod-${{ steps.release_sha.release_sha.date }}-${{ steps.date.outputs.date }}}"
+      - name: Outputs
+        run: |
+          echo sha: ${{ steps.release_sha.release_sha.date }}
+          echo date ${{ steps.date.outputs.date }}
+          echo pre-prod tag: ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
+          
+
+      # - name: ECR prod tag
+      #   uses: abronin/ecr-retag-action@v1
+      #   with:
+      #     repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
+      #     tag: ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
+      #     new-tags: "prod-${{ steps.release_sha.release_sha.date }}-${{ steps.date.outputs.date }}}"

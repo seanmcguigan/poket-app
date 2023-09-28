@@ -48,4 +48,4 @@ jobs:
         with:
           repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
           tag: ${{ env.LATEST_PRE_PROD_IMAGE_TAG }}
-          new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}}"
+          new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}"

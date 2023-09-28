@@ -45,5 +45,5 @@ jobs:
         uses: abronin/ecr-retag-action@v1
         with:
           repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
-          tag: ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
+          tag: $(echo ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }})
           new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}}"

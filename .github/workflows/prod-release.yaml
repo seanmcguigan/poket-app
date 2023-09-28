@@ -9,7 +9,7 @@ env:
 
 jobs:
   docker_tag:
-    name: Docker tag and push to ECR.
+    name: Docker tag for production and push to ECR.
     runs-on: ubuntu-latest
     steps:
       - name: Get current date
@@ -41,9 +41,9 @@ jobs:
           echo pre-prod tag: ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
           
 
-      # - name: ECR prod tag
-      #   uses: abronin/ecr-retag-action@v1
-      #   with:
-      #     repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
-      #     tag: ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
-      #     new-tags: "prod-${{ steps.release_sha.release_sha.date }}-${{ steps.date.outputs.date }}}"
+      - name: ECR prod tag
+        uses: abronin/ecr-retag-action@v1
+        with:
+          repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
+          tag: ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
+          new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}}"

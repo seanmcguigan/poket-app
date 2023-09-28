@@ -21,7 +21,7 @@ jobs:
       - name: Target release sha
         id: release_sha
         run: |
-          release_sha=echo ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }} grep -Eow "([a-f0-9]{7})"
+          release_sha=$(echo ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }} grep -Eow "([a-f0-9]{7})")
           echo release_sha=$release_sha >> $GITHUB_OUTPUT
 
       - name: Configure AWS Credentials

@@ -36,7 +36,7 @@ jobs:
 
       - name: Outputs
         run: |
-          echo sha: ${{ steps.release_sha.release_sha.date }}
+          echo sha: ${{ steps.release_sha.outputs.release_sha }}
           echo date ${{ steps.date.outputs.date }}
           echo pre-prod tag: ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
           

@@ -5,6 +5,9 @@ on:
     - cron: '0 2 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 env:
   APP: "skeleton-application-frontend"
   OWNER: "seanmcguigan"
@@ -15,10 +18,6 @@ env:
 jobs:
   git_tag:
     name: Git tag master for release
-
-    permissions:
-      content: write
-
     outputs: 
       current_short_sha: ${{ steps.short_sha.outputs.short_sha }}
       previous_release_tag: ${{ steps.prod_tag.outputs.prod_tag }}
@@ -67,13 +66,6 @@ jobs:
           force_push_tag: true
         env:
           GH_TOKEN: ${{ github.token }}
-
-      # - name: outputs
-      #   run: | 
-      #     echo "Output short sha ${{ steps.short_sha.outputs.short_sha }}"
-      #     echo "Output current release tag ${{ steps.prod_tag.outputs.prod_tag }}"
-      #     echo "Output new release tag ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}"
-      #     echo "Output build date ${{ steps.date.outputs.date }}"
   
   release:
     needs: git_tag
@@ -82,13 +74,6 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      # - name: outputs
-      #   run: |
-      #     echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
-      #     echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
-      #     echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
-      #     echo "Output build date ${{ needs.git_tag.outputs.current_date }}"
-
       - name: checkout
         uses: actions/checkout@v3
         with:
@@ -145,13 +130,6 @@ jobs:
     name: Docker tag and push to ECR.
     runs-on: ubuntu-latest
     steps:
-      # - name: outputs
-      #   run: |
-      #     echo "The recorded short commit sha ${{ needs.git_tag.outputs.current_short_sha }}"
-      #     echo "The current prod release tag ${{ needs.git_tag.outputs.previous_release_tag }}"
-      #     echo "The new prod release tag ${{ needs.git_tag.outputs.new_release_tag }}"
-      #     echo "Output build date ${{ needs.git_tag.outputs.current_date }}"
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -182,10 +160,6 @@ jobs:
           repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
           tag: "${{ steps.latest_staging_tag.outputs.tag }}"
           new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
-
-      # - name: Store target release sha
-      #   env:
-      #     GH_PAT: ${{ secrets.PAT_GITHUB }} ??? duplicate
 
       - name: Store pre-prod tag
         env:
@@ -240,6 +214,5 @@ jobs:
             post
           fi
 
-      # kicks off the docker tag workflow - with args
       # delete ecr user
       # sort out env vars $VAR ${{ env.VAR }}

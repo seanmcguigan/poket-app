@@ -39,7 +39,6 @@ jobs:
           echo sha: ${{ steps.release_sha.outputs.release_sha }}
           echo date ${{ steps.date.outputs.date }}
           echo pre-prod tag: ${{ vars.LATEST_PRE_PROD_IMAGE_TAG }}
-          
 
       - name: ECR prod tag
         uses: abronin/ecr-retag-action@v1
@@ -49,3 +48,4 @@ jobs:
           repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
           tag: ${{ env.LATEST_PRE_PROD_IMAGE_TAG }}
           new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}"
+# github dispatches flux

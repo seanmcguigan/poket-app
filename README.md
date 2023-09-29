@@ -1,4 +1,5 @@
-![development workflow](https://github.com/seanmcguigan/poker-app/actions/workflows/development-cd.yaml/badge.svg)
+[![Pre-Prod](https://github.com/seanmcguigan/poker-app/actions/workflows/pre-prod.yaml/badge.svg)](https://github.com/seanmcguigan/poker-app/actions/workflows/pre-prod.yaml)
+[![Prod-Release](https://github.com/seanmcguigan/poker-app/actions/workflows/prod-release.yaml/badge.svg)](https://github.com/seanmcguigan/poker-app/actions/workflows/prod-release.yaml)
 
 ## poker-app
 
@@ -16,17 +17,3 @@
 | `chore: foo`                                                                           | Nothing      |
 
 ```date > ./src/date && docker build -t docker.io/seanmcguigan/poker:foobar . -f Docker/Dockerfile```
-Wed 13 Sep 15:38:50 IST 2023
-Wed 13 Sep 15:39:14 IST 2023
-Wed 13 Sep 15:39:36 IST 2023
-foo
-bar
-bug fix
-new feature
-nice hols
-blahblahblah
-bill
-ben
-this is Peter
-this is Paul
-hot fix

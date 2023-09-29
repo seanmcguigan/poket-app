@@ -26,7 +26,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: "0"
@@ -37,13 +37,13 @@ jobs:
           date=$(date +%Y%m%d%H%M%S)
           echo date=$date >> $GITHUB_OUTPUT
 
-      - name: get current commit sha @master
+      - name: Get current commit sha @master
         id: short_sha
         run: |
           short_sha=$(git rev-parse --short ${{ github.sha }})
           echo short_sha=$short_sha >> $GITHUB_OUTPUT
 
-      - name: get previous release tag
+      - name: Get previous release tag
         id: prod_tag
         run: |
           prod_tag=$(gh release view --json tagName | jq --raw-output .tagName)
@@ -51,14 +51,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: increment tag version for next release
+      - name: Increment tag version for next release
         id: calculate_prod_tag
         run: |
           new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ steps.date.outputs.date }}"
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
       
       # always tags the latest master with the next calculated release tag
-      - name: tag latest
+      - name: Tag latest
         uses: rickstaa/action-create-tag@v1
         id: "tag_create"
         with:
@@ -70,17 +70,15 @@ jobs:
   release:
     needs: git_tag
     name: Create new draft release.
-    permissions:
-      contents: write
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: "0"
 
       # Close existing draft releases
-      - name: delete draft releases
+      - name: Delete draft releases
         run: |
           for RELEASE_ID in $(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/$OWNER/$REPO/releases \
@@ -97,7 +95,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Create draft release notes      
-      - name: create draft release notes
+      - name: Create draft release notes
         id: "release_content"
         run: |
           notes=$(gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -111,7 +109,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Create a release draft      
-      - name: create new draft release
+      - name: Create new draft release
         run: |
           gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
           /repos/$OWNER/$REPO/releases \
@@ -161,7 +159,7 @@ jobs:
           tag: "${{ steps.latest_staging_tag.outputs.tag }}"
           new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
 
-      - name: Store pre-prod tag
+      - name: Store pre-prod tag repo var
         env:
           GH_PAT: ${{ secrets.PAT_GITHUB }}
         run: |

@@ -2,6 +2,8 @@ name: "Prod-Release"
 
 on:
   workflow_dispatch:
+  release:
+    types: [published]
 
 env:
   APP: "skeleton-application-frontend"

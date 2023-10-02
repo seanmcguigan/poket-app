@@ -7,7 +7,8 @@ jobs:
 #    if: github.event.client_payload.metadata.summary == 'staging (eu-west-1)'
     runs-on: ubuntu-latest
     steps:
-    - name: Run tests
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
-        echo "metadata: github.event.client_payload.metadata"
-        echo "payload: github.event.client_payload"
+        echo "$GITHUB_CONTEXT"

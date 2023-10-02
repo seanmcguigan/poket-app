@@ -176,8 +176,6 @@ jobs:
             | tac | tac | jq --raw-output .variables[].name
           ))
 
-          echo "Existing vars: $list_vars"
-
           post () {
           curl -Ls \
             -X POST \
@@ -207,14 +205,10 @@ jobs:
                 echo "updating existing variable $var_name"
                 patch
                 break
-              else
-                echo "variable $var_name not found creating"
-                post
-                break
               fi
             done
           else
-            echo "no variables found creating LATEST_PRE_PROD_IMAGE_TAG variable"
+            echo "no variable LATEST_PRE_PROD_IMAGE_TAG found. Creating.."
             post
           fi
 

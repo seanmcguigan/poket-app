@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   APP: "skeleton-application-frontend"
   OWNER: "seanmcguigan"
@@ -161,7 +165,7 @@ jobs:
 
       - name: Store pre-prod tag repo var
         env:
-          GH_PAT: ${{ secrets.PAT_GITHUB }}
+          GH_PAT: ${{ secrets.SET_REPO_VARS }}
         run: |
           list_vars=($(
           curl -Ls \

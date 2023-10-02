@@ -11,5 +11,3 @@ jobs:
       run: |
         echo "metadata: github.event.client_payload.metadata"
         echo "payload: github.event.client_payload"
-
-        

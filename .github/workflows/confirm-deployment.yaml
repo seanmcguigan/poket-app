@@ -1,7 +1,7 @@
 name: test-github-dispatch-provider
 on:
   repository_dispatch:
-    types: [Kustomization/infrastructure-eu-west-1.flux-system]
+    types: [Helmrelease/poker.futrli]
 jobs:
   run-tests-staging:
 #    if: github.event.client_payload.metadata.summary == 'staging (eu-west-1)'

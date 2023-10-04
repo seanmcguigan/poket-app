@@ -56,9 +56,9 @@ jobs:
           new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}"
       
       - name: Wait on conformation that flux has deployed the app on the k8s cluster.
-        uses: lewagon/wait-on-check-action@v1.3.1
+        uses: lewagon/wait-on-check-action@v1.0.0
         with:
-          ref: ${{ steps.release_sha.outputs.release_sha }}
+          ref: ${{ github.sha }} #${{ steps.release_sha.outputs.release_sha }}
           check-name: 'confirm_deployment'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 300

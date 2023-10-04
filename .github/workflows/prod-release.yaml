@@ -65,18 +65,13 @@ jobs:
   #       name: deploy
   #       needs: [confirm_deployment]
 
-  wait_for_deployment:
-    needs: [docker_tag]
-    uses: ./.github/workflows/confirm-deployment.yaml
-  
-  deploy:
-    name: deploy
-    needs: [wait_for_deployment]  # require wait_for_deployment workflow to pass before deploy runs
-    timeout-minutes: 10
-    steps:
-      - name: Application deployed
-        run: |
-          echo "app deployed"
+      - name: Wait for tests to succeed
+        uses: GetDutchie/github-action-wait-on-check@v1.0.0
+        with:
+          ref: ${{ github.ref }}
+          check-name: 'confirm_deployment'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
 
 # github dispatches flux
 # trigger confirm-deployment workflow to succeed with timeout

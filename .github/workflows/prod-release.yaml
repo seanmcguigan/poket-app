@@ -67,7 +67,7 @@ jobs:
 
   wait_for_deployment:
     needs: [docker_tag]
-    uses: ./.github/workflows/tests.yml
+    uses: ./.github/workflows/confirm-deployment.yaml.yml
   
   deploy:
     name: deploy

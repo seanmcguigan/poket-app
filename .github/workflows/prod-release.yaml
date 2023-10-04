@@ -62,7 +62,7 @@ jobs:
         uses: lewagon/wait-on-check-action@v1.3.1
         with:
           ref: ${{ github.sha }}
-          check-name: 'confirm_deployment'
+ #         check-name: confirm_deployment
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 300
 

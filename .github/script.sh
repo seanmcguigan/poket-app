@@ -1,5 +1,4 @@
-GH_PAT="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"
-PRE_PROD_TAG=pre-prod-1q2w3e4-200109111333
+PRE_PROD_TAG=pre-prod-1q2w3e4-2001091113
 OWNER="seanmcguigan"
 REPO="poker-app"
 

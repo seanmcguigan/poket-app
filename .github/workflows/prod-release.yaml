@@ -17,6 +17,7 @@ jobs:
   docker_tag:
     name: Docker tag for production and push to ECR.
     runs-on: ubuntu-latest
+    timeout-minutes: 6
     steps:
       - name: Get current date
         id: date

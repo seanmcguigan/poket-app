@@ -58,10 +58,10 @@ jobs:
       - name: Wait on conformation that flux has deployed the app on the k8s cluster.
         uses: lewagon/wait-on-check-action@v1.3.1
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ github.sha }}
           check-name: 'confirm_deployment'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 5
+          wait-interval: 300
 
 # github dispatches flux
 # dependant job wait on confirm-deployment workflow to succeed with timeout

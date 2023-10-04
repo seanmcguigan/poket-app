@@ -1,10 +1,14 @@
-name: test-github-dispatch-provider
+name: github-dispatch-provider
+
 on:
   repository_dispatch:
     types: [HelmRelease/poker.futrli]
+
+# env passed in from run
+
 jobs:
-  run-tests-staging:
-#    if: github.event.client_payload.metadata.summary == 'staging (eu-west-1)'
+  confirm_deployment:
+    if: ${{ (github.event.client_payload.message == 'Helm upgrade succeeded') && (github.event.client_payload.message.metadata.summary == 'staging eu-west-1) }}
     runs-on: ubuntu-latest
     steps:
     - name: Dump GitHub context

@@ -54,4 +54,14 @@ jobs:
           repository: "futrli/${{ env.APP }}" # "${{ env.OWNER }}/${{ env.APP }}"
           tag: ${{ env.LATEST_PRE_PROD_IMAGE_TAG }}
           new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}"
+      
+      - name: Wait on conformation that flux has deployed the app on the k8s cluster.
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.ref }}
+          check-name: 'confirm_deployment'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 5
+
 # github dispatches flux
+# dependant job wait on confirm-deployment workflow to succeed with timeout

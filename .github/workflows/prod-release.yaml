@@ -9,9 +9,9 @@ env:
   APP: "skeleton-application-frontend"
   AWS_REGION: "eu-west-1"
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   docker_tag:

@@ -55,25 +55,16 @@ jobs:
           tag: ${{ env.LATEST_PRE_PROD_IMAGE_TAG }}
           new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}"
 
-  # wait_for_deployment:
-  #   needs: [docker_tag]
-  #   name: Wait for flux to deploy.
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 5
-  #   steps:
-  #     - name: wait 
-  #       name: deploy
-  #       needs: [confirm_deployment]
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Wait for tests to succeed
-        uses: GetDutchie/github-action-wait-on-check@v1.0.0
+      - name: Wait for confirm_deployment to succeed
+        uses: lewagon/wait-on-check-action@v1.3.1
         with:
           ref: ${{ github.ref }}
           check-name: 'confirm_deployment'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
+          wait-interval: 300
 
 # github dispatches flux
 # trigger confirm-deployment workflow to succeed with timeout

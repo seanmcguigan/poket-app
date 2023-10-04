@@ -64,6 +64,8 @@ jobs:
   #     - name: wait 
   #       name: deploy
   #       needs: [confirm_deployment]
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Wait for tests to succeed
         uses: GetDutchie/github-action-wait-on-check@v1.0.0

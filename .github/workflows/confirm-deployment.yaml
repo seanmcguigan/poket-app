@@ -17,7 +17,7 @@ jobs:
           name: ${{ github.event.client_payload.involvedObject.name }}
           summary: ${{ github.event.client_payload.metadata.summary }}
         run: |
-          echo "$message for $kind $poker in environment $summary - $timestamp"
+          echo "$message for $kind $name in environment $summary - $timestamp"
 
       # - name: Dump GitHub context
       #   env:

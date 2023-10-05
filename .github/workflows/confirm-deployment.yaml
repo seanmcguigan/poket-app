@@ -16,7 +16,7 @@ jobs:
     #     echo "$GITHUB_CONTEXT"
 
     - name: Display message
-        env:
-          message: ${{ github.event.client_payload.message }}
-        run: |
-          echo $message 
+      env:
+        message: ${{ github.event.client_payload.message }}
+      run: |
+        echo $message 

@@ -12,11 +12,15 @@ jobs:
       - name: Display message
         env:
           message: ${{ github.event.client_payload.message }}
+          timestamp: ${{ github.event.client_payload.timestamp }}
+          kind: ${{ github.event.client_payload.involvedObject.kind }}
+          name: ${{ github.event.client_payload.involvedObject.name }}
+          summary: ${{ github.event.client_payload.metadata.summary }}
         run: |
-          echo $message 
+          echo "$message for $kind $poker in environment $summary - $timestamp"
 
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
+      # - name: Dump GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+      #   run: |
+      #     echo "$GITHUB_CONTEXT"

@@ -56,20 +56,21 @@ jobs:
           tag: ${{ env.LATEST_PRE_PROD_IMAGE_TAG }}
           new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}"
       
-      - name: sleep
-        run: |
-          sleep 360
+      # - name: sleep
+      #   run: |
+      #     sleep 360
 
-#       - name: Checkout
-#         uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Wait for confirm_deployment to succeed
-#         uses: lewagon/wait-on-check-action@v1.3.1
-#         with:
-#           ref: ${{ github.sha }}
-#  #         check-name: confirm_deployment
-#           repo-token: ${{ secrets.GITHUB_TOKEN }}
-#           wait-interval: 300
+      - name: Wait for confirm_deployment to succeed
+        uses: ./
+        with:
+          ref: ${{ github.sha }}
+          check-name: confirm-deployment
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 300
+          running-workflow-name: prod-release
 
 # github dispatches flux
 # trigger confirm-deployment workflow to succeed with timeout

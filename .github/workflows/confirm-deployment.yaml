@@ -8,12 +8,13 @@ on:
 
 jobs:
   confirm_deployment:
-  name: confirm_deployment
-# daz ni werk    if: ${{ (github.event.client_payload.message == 'Helm upgrade succeeded') && (github.event.client_payload.message.metadata.summary == 'staging eu-west-1) }}
-    runs-on: ubuntu-latest
-    steps:
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: |
-        echo "$GITHUB_CONTEXT"
+    name: confirm_deployment
+  # daz ni werk    if: ${{ (github.event.client_payload.message == 'Helm upgrade succeeded') && (github.event.client_payload.message.metadata.summary == 'staging eu-west-1) }}
+      runs-on: ubuntu-latest
+      steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+

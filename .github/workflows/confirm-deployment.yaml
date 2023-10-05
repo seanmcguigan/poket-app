@@ -4,18 +4,19 @@ on:
   repository_dispatch:
     types: [HelmRelease/poker.futrli]
 
+env:
+  message: ${{ github.event.client_payload.message }}
+  timestamp: ${{ github.event.client_payload.timestamp }}
+  kind: ${{ github.event.client_payload.involvedObject.kind }}
+  name: ${{ github.event.client_payload.involvedObject.name }}
+  summary: ${{ github.event.client_payload.metadata.summary }}
+
 jobs:
   confirm_deployment:
     name: confirm_deployment
     runs-on: ubuntu-latest
     steps:
       - name: Display message
-        env:
-          message: ${{ github.event.client_payload.message }}
-          timestamp: ${{ github.event.client_payload.timestamp }}
-          kind: ${{ github.event.client_payload.involvedObject.kind }}
-          name: ${{ github.event.client_payload.involvedObject.name }}
-          summary: ${{ github.event.client_payload.metadata.summary }}
         run: |
           echo "$message for $kind $name in environment $summary - $timestamp"
 
@@ -24,3 +25,12 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+
+      - name: Deployment badge
+        uses: RubbaBoy/BYOB@v1.3.0
+        with:
+          NAME: time
+          LABEL: 'Latest Deployment'
+          STATUS: $time
+          COLOR: 00EEFF
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

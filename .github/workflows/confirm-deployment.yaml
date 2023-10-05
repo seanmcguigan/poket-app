@@ -1,4 +1,4 @@
-name: github-dispatch-provider
+name: "Confirm Deployment"
 
 on:
   repository_dispatch:

@@ -70,7 +70,7 @@ jobs:
 #          check-name: confirm_deployment
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 300
-          running-workflow-name: wait-for-check-name
+          running-workflow-name: prod-release
 
 # github dispatches flux
 # trigger confirm-deployment workflow to succeed with timeout

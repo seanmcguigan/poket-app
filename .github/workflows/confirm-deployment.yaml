@@ -19,8 +19,8 @@ jobs:
         run: |
           echo "$message for $kind $name in environment $summary - $timestamp"
 
-      # - name: Dump GitHub context
-      #   env:
-      #     GITHUB_CONTEXT: ${{ toJson(github) }}
-      #   run: |
-      #     echo "$GITHUB_CONTEXT"
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"

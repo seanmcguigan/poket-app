@@ -5,13 +5,14 @@ on:
   release:
     types: [published]
 
+  workflow_run:
+    workflows: [ test-client, test-server ]
+    branches: [ main ]
+    types: [ completed ]
+
 env:
   APP: "skeleton-application-frontend"
   AWS_REGION: "eu-west-1"
-
-# concurrency:
-#   group: ${{ github.workflow }}-${{ github.ref }}
-#   cancel-in-progress: true
 
 jobs:
   docker_tag:
@@ -56,21 +57,3 @@ jobs:
           tag: ${{ env.LATEST_PRE_PROD_IMAGE_TAG }}
           new-tags: "prod-${{ steps.release_sha.outputs.release_sha }}-${{ steps.date.outputs.date }}"
       
-      # - name: sleep
-      #   run: |
-      #     sleep 360
-
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Wait for confirm_deployment to succeed
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          ref: ${{ github.sha }}
-#          check-name: confirm_deployment
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 300
-          running-workflow-name: 'Docker tag for production and push to ECR'
-
-# github dispatches flux
-# trigger confirm-deployment workflow to succeed with timeout

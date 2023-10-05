@@ -12,9 +12,14 @@ jobs:
   # daz ni werk    if: ${{ (github.event.client_payload.message == 'Helm upgrade succeeded') && (github.event.client_payload.message.metadata.summary == 'staging eu-west-1) }}
     runs-on: ubuntu-latest
     steps:
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: |
-        echo "$GITHUB_CONTEXT"
+    # - name: Dump GitHub context
+    #   env:
+    #     GITHUB_CONTEXT: ${{ toJson(github) }}
+    #   run: |
+    #     echo "$GITHUB_CONTEXT"
 
+   - name: Display message
+      env:
+        message: ${{ github.event.client_payload.message }}
+      run: |
+        echo $message        

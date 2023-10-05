@@ -15,7 +15,7 @@ env:
 
 jobs:
   docker_tag:
-    name: Docker tag for production and push to ECR.
+    name: Docker tag for production and push to ECR
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
@@ -67,10 +67,10 @@ jobs:
         uses: lewagon/wait-on-check-action@v1.3.1
         with:
           ref: ${{ github.sha }}
-          check-name: confirm_deployment
+#          check-name: confirm_deployment
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 300
-          running-workflow-name: prod-release
+          running-workflow-name: 'Docker tag for production and push to ECR'
 
 # github dispatches flux
 # trigger confirm-deployment workflow to succeed with timeout

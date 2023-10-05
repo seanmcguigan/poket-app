@@ -4,12 +4,9 @@ on:
   repository_dispatch:
     types: [HelmRelease/poker.futrli]
 
-# env passed in from run
-
 jobs:
   confirm_deployment:
     name: confirm_deployment
-  # daz ni werk    if: ${{ (github.event.client_payload.message == 'Helm upgrade succeeded') && (github.event.client_payload.message.metadata.summary == 'staging eu-west-1) }}
     runs-on: ubuntu-latest
     steps:
     # - name: Dump GitHub context
@@ -18,8 +15,8 @@ jobs:
     #   run: |
     #     echo "$GITHUB_CONTEXT"
 
-   - name: Display message
-      env:
-        message: ${{ github.event.client_payload.message }}
-      run: |
-        echo $message        
+    - name: Display message
+        env:
+          message: ${{ github.event.client_payload.message }}
+        run: |
+          echo $message 

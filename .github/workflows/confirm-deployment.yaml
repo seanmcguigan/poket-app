@@ -8,7 +8,7 @@ on:
 
 jobs:
   confirm_deployment:
-  name: Confirm Deployment
+  name: confirm_deployment
 # daz ni werk    if: ${{ (github.event.client_payload.message == 'Helm upgrade succeeded') && (github.event.client_payload.message.metadata.summary == 'staging eu-west-1) }}
     runs-on: ubuntu-latest
     steps:

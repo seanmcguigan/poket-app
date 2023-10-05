@@ -9,14 +9,14 @@ jobs:
     name: confirm_deployment
     runs-on: ubuntu-latest
     steps:
+      - name: Display message
+        env:
+          message: ${{ github.event.client_payload.message }}
+        run: |
+          echo $message 
+
     # - name: Dump GitHub context
     #   env:
     #     GITHUB_CONTEXT: ${{ toJson(github) }}
     #   run: |
     #     echo "$GITHUB_CONTEXT"
-
-    - name: Display message
-      env:
-        message: ${{ github.event.client_payload.message }}
-      run: |
-        echo $message 

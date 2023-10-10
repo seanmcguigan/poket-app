@@ -70,11 +70,12 @@ jobs:
             gh run cancel ${{ github.run_id }}
             gh run watch ${{ github.run_id }}
           fi
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       # always tags the latest master with the next calculated release tag
       - name: Tag latest
         uses: rickstaa/action-create-tag@v1
-        id: "tag_create"
         with:
           tag: ${{ steps.calculate_prod_tag.outputs.new_prod_tag }}
           force_push_tag: true

@@ -59,11 +59,14 @@ jobs:
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
       
       - name: Exit if no code has been commited since last release
+        id: exit_run
         run: |
-          if [[ ${{ steps.short_sha.outputs.short_sha }} == *"${{ steps.prod_tag.outputs.prod_tag }}"* ]]; then
+          if [[ ${{ steps.prod_tag.outputs.prod_tag }} == *"${{ steps.short_sha.outputs.short_sha }}"* ]]; then
             echo "no new code commited since last release"
+
             echo "short sha: ${{ steps.short_sha.outputs.short_sha }}"
             echo "prod tag: ${{ steps.prod_tag.outputs.prod_tag }}"
+            
             gh run cancel ${{ github.run_id }}
             gh run watch ${{ github.run_id }}
           fi

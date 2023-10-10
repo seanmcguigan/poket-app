@@ -137,13 +137,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Test new draft release
-      #   run: |
-      #     echo new tag name: ${{ needs.git_tag.outputs.new_release_tag }}
-      #     echo previous tag name: ${{ needs.git_tag.outputs.previous_release_tag }}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   docker_tag:
     needs: [git_tag, release]
     name: Docker tag and push to ECR.

@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 env:
   APP: "skeleton-application-frontend"
@@ -51,12 +52,22 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Increment tag version for next release
+      - name: Calculate tag version for next release
         id: calculate_prod_tag
         run: |
           new_prod_tag="${{ env.APP }}-${{ steps.short_sha.outputs.short_sha }}-${{ steps.date.outputs.date }}"
           echo "new_prod_tag=$new_prod_tag" >> $GITHUB_OUTPUT
       
+      - name: Exit if no code has been commited since last release
+        run: |
+          if [[ ${{ steps.short_sha.outputs.short_sha }} == *"${{ steps.prod_tag.outputs.prod_tag }}"* ]]; then
+            echo "no new code commited since last release"
+            echo "short sha: ${{ steps.short_sha.outputs.short_sha }}"
+            echo "prod tag: ${{ steps.prod_tag.outputs.prod_tag }}"
+            gh run cancel ${{ github.run_id }}
+            gh run watch ${{ github.run_id }}
+          fi
+
       # always tags the latest master with the next calculated release tag
       - name: Tag latest
         uses: rickstaa/action-create-tag@v1
@@ -122,12 +133,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Test new draft release
-        run: |
-          echo new tag name: ${{ needs.git_tag.outputs.new_release_tag }}
-          echo previous tag name: ${{ needs.git_tag.outputs.previous_release_tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Test new draft release
+      #   run: |
+      #     echo new tag name: ${{ needs.git_tag.outputs.new_release_tag }}
+      #     echo previous tag name: ${{ needs.git_tag.outputs.previous_release_tag }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   docker_tag:
     needs: [git_tag, release]

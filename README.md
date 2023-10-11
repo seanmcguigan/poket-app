@@ -1,6 +1,7 @@
 [![Pre-Prod](https://github.com/seanmcguigan/poker-app/actions/workflows/pre-prod.yaml/badge.svg?branch=main)](https://github.com/seanmcguigan/poker-app/actions/workflows/pre-prod.yaml)
 [![Prod-Release](https://github.com/seanmcguigan/poker-app/actions/workflows/prod-release.yaml/badge.svg?branch=main)](https://github.com/seanmcguigan/poker-app/actions/workflows/prod-release.yaml)
 [![Confirm Deployment](https://github.com/seanmcguigan/poker-app/actions/workflows/confirm-deployment.yaml/badge.svg?branch=main)](https://github.com/seanmcguigan/poker-app/actions/workflows/confirm-deployment.yaml)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/seanmcguigan/89d9a7e5ace662c5600fd5357b1b2317/raw/test.json)
 
 
 ## poker-app

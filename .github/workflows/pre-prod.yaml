@@ -179,8 +179,8 @@ jobs:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: 89d9a7e5ace662c5600fd5357b1b2317
           filename: test.json # Use test.svg if you want to use the SVG mode.
-          label: Hello
-          message: World
+          label: Foo
+          message: Bar
           color: orange
 
       - name: Store pre-prod tag repo var

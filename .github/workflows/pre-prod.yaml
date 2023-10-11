@@ -173,6 +173,16 @@ jobs:
           tag: "${{ steps.latest_staging_tag.outputs.tag }}"
           new-tags: "pre-prod-${{ needs.git_tag.outputs.current_short_sha }}-${{ needs.git_tag.outputs.current_date }}"
 
+      - name: Create Awesome Badge
+        uses: schneegans/dynamic-badges-action@v1.6.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: https://gist.github.com/seanmcguigan/89d9a7e5ace662c5600fd5357b1b2317
+          filename: test.json # Use test.svg if you want to use the SVG mode.
+          label: Hello
+          message: World
+          color: orange
+
       - name: Store pre-prod tag repo var
         env:
           GH_PAT: ${{ secrets.SET_REPO_VARS }}

@@ -1,6 +1,7 @@
-[![Pre-Prod](https://github.com/seanmcguigan/poker-app/actions/workflows/pre-prod.yaml/badge.svg)](https://github.com/seanmcguigan/poker-app/actions/workflows/pre-prod.yaml)
-[![Prod-Release](https://github.com/seanmcguigan/poker-app/actions/workflows/prod-release.yaml/badge.svg)](https://github.com/seanmcguigan/poker-app/actions/workflows/prod-release.yaml)
-[![Confirm Deployment](https://github.com/seanmcguigan/poker-app/actions/workflows/confirm-deployment.yaml/badge.svg)](https://github.com/seanmcguigan/poker-app/actions/workflows/confirm-deployment.yaml)
+[![Pre-Prod](https://github.com/seanmcguigan/poker-app/actions/workflows/pre-prod.yaml/badge.svg?branch=main)](https://github.com/seanmcguigan/poker-app/actions/workflows/pre-prod.yaml)
+[![Prod-Release](https://github.com/seanmcguigan/poker-app/actions/workflows/prod-release.yaml/badge.svg?branch=main)](https://github.com/seanmcguigan/poker-app/actions/workflows/prod-release.yaml)
+[![Confirm Deployment](https://github.com/seanmcguigan/poker-app/actions/workflows/confirm-deployment.yaml/badge.svg?branch=main)](https://github.com/seanmcguigan/poker-app/actions/workflows/confirm-deployment.yaml)
+
 
 ## poker-app
 

@@ -72,4 +72,3 @@ jobs:
             GEMFURY_TOKEN=${{ env.GEMFURY_TOKEN }}
           secret-files: |
             "MY_SECRET=./secret.txt"  
-

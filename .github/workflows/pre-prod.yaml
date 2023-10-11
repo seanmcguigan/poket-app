@@ -182,6 +182,7 @@ jobs:
           label: Current flux tag staging
           message: "${{ steps.latest_staging_tag.outputs.tag }}"
           color: green
+          namedLogo: Flux
 
       - name: Store pre-prod tag repo var
         env:

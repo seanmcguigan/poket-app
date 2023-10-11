@@ -181,8 +181,9 @@ jobs:
           filename: test.json
           label: Current flux tag staging
           message: "${{ steps.latest_staging_tag.outputs.tag }}"
-          color: green
+          color: "#2dba4e"
           namedLogo: Flux
+          logoColor: white
 
       - name: Store pre-prod tag repo var
         env:

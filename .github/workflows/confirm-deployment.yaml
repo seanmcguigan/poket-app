@@ -40,8 +40,8 @@ jobs:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: 89d9a7e5ace662c5600fd5357b1b2317
           filename: test.json # ${{ "github.event.client_payload.metadata.summary }}.json"
-          label: ${{ github.event.client_payload.metadata.summary }}
-          message: $docker_tag
+          label: ${{ env.summary }}
+          message: "${{ steps.docker_tag.outputs.docker_tag }}"
           color: "#2dba4e"
           namedLogo: Flux
           logoColor: white

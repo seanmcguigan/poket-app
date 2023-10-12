@@ -36,18 +36,18 @@ jobs:
         run: |
           echo -e ${{ github.event.client_payload.message }}
 
-          # docker_tag=$(echo -e ${{ github.event.client_payload.message }} | grep -Eo "staging-.{7}-[0-9]+")
-          # echo docker_tag=$docker_tag >> $GITHUB_OUTPUT
+      # docker_tag=$(echo -e ${{ github.event.client_payload.message }} | grep -Eo "staging-.{7}-[0-9]+")
+      # echo docker_tag=$docker_tag >> $GITHUB_OUTPUT
 
-      - name: Create Badge
-        uses: schneegans/dynamic-badges-action@v1.6.0
-        with:
-          auth: ${{ secrets.GIST_SECRET }}
-          gistID: 89d9a7e5ace662c5600fd5357b1b2317
-          filename: test.json
-          label: ${{ github.event.client_payload.metadata.summary }}
-          message: ${{ steps.docker_tag.outputs.docker_tag }}
-          color: "#2dba4e"
-          namedLogo: Flux
-          logoColor: white
-          style: social
+      # - name: Create Badge
+      #   uses: schneegans/dynamic-badges-action@v1.6.0
+      #   with:
+      #     auth: ${{ secrets.GIST_SECRET }}
+      #     gistID: 89d9a7e5ace662c5600fd5357b1b2317
+      #     filename: test.json
+      #     label: ${{ github.event.client_payload.metadata.summary }}
+      #     message: ${{ steps.docker_tag.outputs.docker_tag }}
+      #     color: "#2dba4e"
+      #     namedLogo: Flux
+      #     logoColor: white
+      #     style: social

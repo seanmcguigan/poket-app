@@ -2,14 +2,14 @@ name: "Confirm Deployment"
 
 on:
   repository_dispatch:
-    types: [HelmRelease/poker.futrli]
+    types: [ImageUpdateAutomation/poker.futrli]
 
-env:
-  message: ${{ github.event.client_payload.message }}
-  timestamp: ${{ github.event.client_payload.timestamp }}
-  kind: ${{ github.event.client_payload.involvedObject.kind }}
-  name: ${{ github.event.client_payload.involvedObject.name }}
-  summary: ${{ github.event.client_payload.metadata.summary }}
+# env:
+#   message: ${{ github.event.client_payload.message }}
+#   timestamp: ${{ github.event.client_payload.timestamp }}
+#   kind: ${{ github.event.client_payload.involvedObject.kind }}
+#   name: ${{ github.event.client_payload.involvedObject.name }}
+#   summary: ${{ github.event.client_payload.metadata.summary }}
 
 jobs:
   confirm_deployment:

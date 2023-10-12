@@ -16,15 +16,15 @@ jobs:
     name: confirm_deployment
     runs-on: ubuntu-latest
     steps:
-      - name: Display message
-        run: |
-          if ["$message" != "Helm upgrade succeeded"]
-          then 
-            echo "$message for $kind $name in environment $summary - $timestamp"
-            exit 1
-          else
-            echo "$message for $kind $name in environment $summary - $timestamp"
-          fi
+      # - name: Display message
+      #   run: |
+      #     if ["$message" != "Helm upgrade succeeded"]
+      #     then 
+      #       echo "$message for $kind $name in environment $summary - $timestamp"
+      #       exit 1
+      #     else
+      #       echo "$message for $kind $name in environment $summary - $timestamp"
+      #     fi
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}

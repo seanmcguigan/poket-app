@@ -184,6 +184,7 @@ jobs:
           color: "#2dba4e"
           namedLogo: Flux
           logoColor: white
+          style: social
 
       - name: Store pre-prod tag repo var
         env:

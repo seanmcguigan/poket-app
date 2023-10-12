@@ -25,3 +25,8 @@ jobs:
           else
             echo "$message for $kind $name in environment $summary - $timestamp"
           fi
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"

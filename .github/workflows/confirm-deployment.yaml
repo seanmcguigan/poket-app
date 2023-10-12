@@ -34,8 +34,10 @@ jobs:
       - name: Docker tag
         id: docker_tag
         run: |
-          docker_tag=$(echo -e ${{ github.event.client_payload.message }} | grep -Eo "staging-.{7}-[0-9]+")
-          echo docker_tag=$docker_tag >> $GITHUB_OUTPUT
+          echo -e ${{ github.event.client_payload.message }}
+
+          # docker_tag=$(echo -e ${{ github.event.client_payload.message }} | grep -Eo "staging-.{7}-[0-9]+")
+          # echo docker_tag=$docker_tag >> $GITHUB_OUTPUT
 
       - name: Create Badge
         uses: schneegans/dynamic-badges-action@v1.6.0

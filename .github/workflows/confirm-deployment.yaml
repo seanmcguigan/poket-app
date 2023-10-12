@@ -34,7 +34,7 @@ jobs:
       - name: Docker tag
         id: docker_tag
         run: |
-          docker_tag=$(echo ${{ github.event.client_payload.message }} | egrep -Eo 'staging-.{7}-[0-9]+')
+          docker_tag=$(echo ${{ github.event.client_payload.message }} | grep -Eo "staging-.{7}-[0-9]+")
           echo docker_tag=$docker_tag >> $GITHUB_OUTPUT
 
       - name: Create Badge

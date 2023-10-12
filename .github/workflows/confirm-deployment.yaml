@@ -6,9 +6,6 @@ on:
 
 env:
   message: ${{ github.event.client_payload.message }}
-#   timestamp: ${{ github.event.client_payload.timestamp }}
-#   kind: ${{ github.event.client_payload.involvedObject.kind }}
-#   name: ${{ github.event.client_payload.involvedObject.name }}
   summary: ${{ github.event.client_payload.metadata.summary }}
 
 jobs:
@@ -16,37 +13,35 @@ jobs:
     name: confirm_deployment
     runs-on: ubuntu-latest
     steps:
-      # - name: Display message
+      # - name: Dump GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
       #   run: |
-      #     if ["$message" != "Helm upgrade succeeded"]
-      #     then 
-      #       echo "$message for $kind $name in environment $summary - $timestamp"
-      #       exit 1
-      #     else
-      #       echo "$message for $kind $name in environment $summary - $timestamp"
-      #     fi
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
+      #     echo "$GITHUB_CONTEXT"
 
       - name: Docker tag
         id: docker_tag
         run: |
-          echo -e "${{ github.event.client_payload.message }}"
+          if [ ${{ "github.event.client_payload.metadata.summary }}" = "staging-eu-west-1" ]
+          then
+            docker_tag=$(echo -e "${{ github.event.client_payload.message }}" | grep -Eo "staging-.{7}-[0-9]+")
+            echo docker_tag=$docker_tag >> $GITHUB_ENV
+          fi
 
-          docker_tag=$(echo -e "${{ github.event.client_payload.message }}" | grep -Eo "staging-.{7}-[0-9]+")
-          echo docker_tag=$docker_tag >> $GITHUB_OUTPUT
+          if [ ${{ "github.event.client_payload.metadata.summary }}" = "prod-eu-west-1" ]
+          then
+            docker_tag=$(echo -e "${{ github.event.client_payload.message }}" | grep -Eo "prod-.{7}-[0-9]+")
+            echo docker_tag=$docker_tag >> $GITHUB_ENV
+          fi
 
       - name: Create Badge
         uses: schneegans/dynamic-badges-action@v1.6.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: 89d9a7e5ace662c5600fd5357b1b2317
-          filename: test.json
+          filename: test.json # ${{ "github.event.client_payload.metadata.summary }}.json"
           label: ${{ github.event.client_payload.metadata.summary }}
-          message: ${{ steps.docker_tag.outputs.docker_tag }}
+          message: $docker_tag
           color: "#2dba4e"
           namedLogo: Flux
           logoColor: white

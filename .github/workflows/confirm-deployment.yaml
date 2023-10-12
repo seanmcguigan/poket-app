@@ -2,7 +2,7 @@ name: "Confirm Deployment"
 
 on:
   repository_dispatch:
-    types: [ImageUpdateAutomation/poker.futrli]
+    types: [ImageUpdateAutomation/poker.flux-system]
 
 # env:
 #   message: ${{ github.event.client_payload.message }}

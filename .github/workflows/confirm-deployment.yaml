@@ -22,13 +22,13 @@ jobs:
       - name: Docker tag
         id: docker_tag
         run: |
-          if [ $summary = "staging-eu-west-1" ]
+          if [ ${{ env.summary }} = "staging-eu-west-1" ]
           then
             docker_tag=$(echo -e "${{ github.event.client_payload.message }}" | grep -Eo "staging-.{7}-[0-9]+")
             echo docker_tag=$docker_tag >> $GITHUB_ENV
           fi
 
-          if [ $summary = "prod-eu-west-1" ]
+          if [ ${{ env.summary }} = "prod-eu-west-1" ]
           then
             docker_tag=$(echo -e "${{ github.event.client_payload.message }}" | grep -Eo "prod-.{7}-[0-9]+")
             echo docker_tag=$docker_tag >> $GITHUB_ENV

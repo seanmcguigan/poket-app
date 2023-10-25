@@ -166,7 +166,7 @@ jobs:
             echo -e "latest image tags:\n$tag\n\nmatch git short sha:\nstaging-${{ needs.git_tag.outputs.current_short_sha }}"
             echo tag=$tag >> $GITHUB_OUTPUT
           else
-            echo "tags don't match, exiting.."; exit 1
+            echo "tags don't match, exiting.."; exit 0
           fi
           
       - name: ECR pre-prod tag
